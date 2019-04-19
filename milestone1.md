@@ -10,7 +10,7 @@ Our target users are the parents who are seeking video games as gifts for their 
 Other potential topics we considered includes an app that suggests what clothing to bring in suitcase for business travels with weather API and clothing and suitcase dataset. Another app is one that recommends hiking trails and gears/supplies for hikers with various skill levels and tracks the progress of each hiker.
 
 ## Story Board 1
-#### Parent trying to search for perfect birthday gift video game using our app.
+#### Parent trying to search for the perfect birthday gift video game using our app.
 ![alt text](https://github.com/mis046/COGS121_SP19_MS-ZL-TC-XD/blob/master/ms1_src/sb01.JPG)
 
 ## Story Board 2
