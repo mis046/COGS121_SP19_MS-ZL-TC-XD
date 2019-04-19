@@ -16,5 +16,6 @@ Other potential topics we considered includes an app that suggests what clothing
 
 
 ## Paper Prototype 1
+![alt text](https://github.com/mis046/COGS121_SP19_MS-ZL-TC-XD/blob/master/ms1_src/pp01.PNG)
 
 ## Paper Prototype 2
