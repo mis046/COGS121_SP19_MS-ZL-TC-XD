@@ -19,7 +19,7 @@ Other potential topics we considered includes an app that suggests what clothing
 
 
 ## Paper Prototype 1
-![alt text](https://github.com/mis046/COGS121_SP19_MS-ZL-TC-XD/blob/master/ms1_src/pp01.JPG)
+![alt text](https://github.com/mis046/COGS121_SP19_MS-ZL-TC-XD/blob/master/ms1_src/pp01.JPEG)
 
 ## Paper Prototype 2
-![alt text](https://github.com/mis046/COGS121_SP19_MS-ZL-TC-XD/blob/master/ms1_src/pp02.JPEG)
+![alt text](https://github.com/mis046/COGS121_SP19_MS-ZL-TC-XD/blob/master/ms1_src/pp02.JPG)
