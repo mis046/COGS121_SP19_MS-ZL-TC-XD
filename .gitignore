@@ -1,3 +1,3 @@
 # ignore all node_modules/ -- do NOT put them in git -- use 'npm install' to install on your machine
 node_modules/
-ms2_src_skeleton/package-lock.json
+# ms2_src_skeleton/package-lock.json
