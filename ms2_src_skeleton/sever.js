@@ -1,6 +1,8 @@
 // initialize express
 const express = require('express');
 const app = express();
+var path = require('path');
+
 
 // setup static file location, /static
 app.use(express.static('static_files'));
@@ -9,3 +11,7 @@ app.use(express.static('static_files'));
 app.listen(3000, () => {
     console.log("Server starts, http://localhost:3000/");
 });
+
+app.get('/child_info', function (req, res) {
+    res.sendFile(path.join(__dirname + '/static_files/child_info.html'));
+})
