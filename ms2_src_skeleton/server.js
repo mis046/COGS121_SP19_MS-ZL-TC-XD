@@ -23,3 +23,7 @@ app.get('/game_rec', function (req, res) {
 app.get('/game_info', function (req, res) {
     res.sendFile(path.join(__dirname + '/static_files/game_info.html'));
 })
+
+app.get('/buy', function (req, res) {
+    res.sendFile(path.join(__dirname + '/static_files/buy.html'));
+})
