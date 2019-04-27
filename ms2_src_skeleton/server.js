@@ -15,3 +15,7 @@ app.listen(3000, () => {
 app.get('/child_info', function (req, res) {
     res.sendFile(path.join(__dirname + '/static_files/child_info.html'));
 })
+
+app.get('/game_rec', function (req, res) {
+    res.sendFile(path.join(__dirname + '/static_files/game_rec.html'));
+})
