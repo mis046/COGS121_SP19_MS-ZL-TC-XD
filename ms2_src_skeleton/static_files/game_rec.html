@@ -1,11 +1,44 @@
 <!DOCTYPE html>
 <html>
-<head>
+  <head>
     <title>Firefrog</title>
-</head>
-<body>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script type="text/javascript">
+      let index = 0;
+      $(document).ready(() => {
+        $.ajax({
+          url: "games/",
+          type: "GET",
+          datatype: "json",
+          success: data => {
+            $("#games").html("recommend : " + data[index]);
+          }
+        });
+
+        $("#next").click(() => {
+          $.ajax({
+            url: "games/",
+            type: "GET",
+            datatype: "json",
+            success: data => {
+              if (index < data.length - 1) {
+                index++;
+              } else {
+                index = 0;
+              }
+              $("#games").html("recommend : " + data[index]);
+            }
+          });
+        });
+      });
+    </script>
+  </head>
+  <body>
     <h1>Insert Pikachu Meme</h1>
-    <button>Next</button>
-    <button onclick="window.location.href = '/game_info.html'">See Detail</button>
-</body>
+    <button id="next">Next</button>
+    <button onclick="window.location.href = '/game_info.html'">
+      See Detail
+    </button>
+    <div id="games"></div>
+  </body>
 </html>
