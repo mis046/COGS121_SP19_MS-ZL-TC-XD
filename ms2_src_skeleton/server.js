@@ -19,3 +19,7 @@ app.get('/child_info', function (req, res) {
 app.get('/game_rec', function (req, res) {
     res.sendFile(path.join(__dirname + '/static_files/game_rec.html'));
 })
+
+app.get('/game_info', function (req, res) {
+    res.sendFile(path.join(__dirname + '/static_files/game_info.html'));
+})
