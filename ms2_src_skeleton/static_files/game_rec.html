@@ -31,7 +31,9 @@
           type: "GET",
           datatype: "json",
           success: data => {
-            $("#games").html("recommend : " + data[index]);
+            const game_names = Object.keys(data);
+            $("#games").html("recommend : " + game_names[index]);
+            $("#gameCover").html('<img class="gameCover" src="'+ data[game_names[index]].coverPic + '" />')
           }
         });
 
@@ -41,12 +43,14 @@
             type: "GET",
             datatype: "json",
             success: data => {
-              if (index < data.length - 1) {
+              const game_names = Object.keys(data);
+              if (index < game_names.length - 1) {
                 index++;
               } else {
                 index = 0;
               }
-              $("#games").html("recommend : " + data[index]);
+              $("#games").html("recommend : " + game_names[index]);
+              $("#gameCover").html('<img class="gameCover" src="'+ data[game_names[index]].coverPic + '" />')
             }
           });
         });
@@ -54,7 +58,8 @@
     </script>
   </head>
   <body>
-    <img class="gameCover" src="picture/game_rec.png" />
+    <div id="gameCover">
+    </div>
     <div id="games"></div>
     <button onclick="goBack()">Back</button>
     <button id="showAnotherGame">Show Another Game</button>
