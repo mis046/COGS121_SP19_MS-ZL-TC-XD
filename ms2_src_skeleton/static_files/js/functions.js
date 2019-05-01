@@ -1,3 +1,3 @@
 function goBack() {
-    window.history.back();
+  window.history.back();
 }
