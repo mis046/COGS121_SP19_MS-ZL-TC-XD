@@ -9,13 +9,13 @@ In this milestone, we went along with our idea of creating an app for parents wh
 
 ## Screenshots
 ![alt text](https://github.com/mis046/COGS121_SP19_MS-ZL-TC-XD/blob/milestone2/ms2_src_skeleton/static_files/picture/ms2_1.png)
-
+---
 ![alt text](https://github.com/mis046/COGS121_SP19_MS-ZL-TC-XD/blob/milestone2/ms2_src_skeleton/static_files/picture/ms2_2.png)
-
+---
 ![alt text](https://github.com/mis046/COGS121_SP19_MS-ZL-TC-XD/blob/milestone2/ms2_src_skeleton/static_files/picture/ms2_3.png)
-
+---
 ![alt text](https://github.com/mis046/COGS121_SP19_MS-ZL-TC-XD/blob/milestone2/ms2_src_skeleton/static_files/picture/ms2_4.png)
-
+---
 ![alt text](https://github.com/mis046/COGS121_SP19_MS-ZL-TC-XD/blob/milestone2/ms2_src_skeleton/static_files/picture/ms2_5.png)
-
+---
 #### Compared to the prototype 2 we made, We added a home screen with an app name, logo and description for the app to the UI skeleton, as well as a back button on all pages that allows user to navigate pack to the previous page. The scanning for barcode option is omitted from the skeleton since it is not yet implemented, but all other options stayed the same on that page. The child info page is identical to prototype 2, with the options being placeholders since we are currently not using a database. The game recommendation page, game detail page and purchase options page are all the same with the prototype.
