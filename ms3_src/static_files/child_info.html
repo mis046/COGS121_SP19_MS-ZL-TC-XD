@@ -26,6 +26,7 @@
       integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
       crossorigin="anonymous"
     ></script>
+    <script src="jquery-3.3.1.min.js"></script>
 
     <!-- Bootstrap CSS -->
     <link
@@ -56,9 +57,22 @@
           $.each($("#genre-div input:checked"), function(){            
             genres.push($(this).attr("value"));
           });
-          console.log("age: " + age + " gender: " + gender + " platform: " + platform + " genres: " + 
-          genres);
-          //document.location.href = '/game_rec.html';
+
+          $.ajax({
+            // all URLs are relative to http://localhost:3000/
+            url: 'game_rec',
+            type: 'POST', // <-- this is POST, not GET
+            data: {
+                    age: age,
+                    gender: gender,
+                    platform: platform,
+                    genres: genres
+                  },
+            success: (data) => {
+              console.log("successfully post child info");
+              document.location.href = '/game_rec.html';
+            }
+          });
         });
       });
     </script>
@@ -129,7 +143,7 @@
               id="option1"
               autocomplete="off"
               checked
-              value="ps4"
+              value="48"
             />
             <img class="platform-btn" src="picture/icon_ps4.png" />
           </label>
@@ -139,7 +153,7 @@
               name="options"
               id="option2"
               autocomplete="off"
-              value="xbox"
+              value="49"
             />
             <img class="platform-btn" src="picture/icon_xbox.png" />
           </label>
@@ -149,7 +163,7 @@
               name="options"
               id="option3"
               autocomplete="off"
-              value="switch"
+              value="130"
             />
             <img class="platform-btn" src="picture/icon_switch.png" />
           </label>
