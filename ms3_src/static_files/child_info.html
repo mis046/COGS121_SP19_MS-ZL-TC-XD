@@ -49,28 +49,28 @@
           $("#age").val(curr_age + 1);
         });
 
-        $('#submit_btn').click(() => {
+        $("#submit_btn").click(() => {
           let age = $("#age").val();
-          let gender = $('#gender-div .active input').attr("value");
-          let platform = $('#platform-div .active input').attr("value");
+          let gender = $("#gender-div .active input").attr("value");
+          let platform = $("#platform-div .active input").attr("value");
           let genres = [];
-          $.each($("#genre-div input:checked"), function(){            
+          $.each($("#genre-div input:checked"), function() {
             genres.push($(this).attr("value"));
           });
 
           $.ajax({
             // all URLs are relative to http://localhost:3000/
-            url: 'game_rec',
-            type: 'POST', // <-- this is POST, not GET
+            url: "game_rec",
+            type: "POST", // <-- this is POST, not GET
             data: {
-                    age: age,
-                    gender: gender,
-                    platform: platform,
-                    genres: genres
-                  },
-            success: (data) => {
+              age: age,
+              gender: gender,
+              platform: platform,
+              genres: genres
+            },
+            success: data => {
               console.log("successfully post child info");
-              document.location.href = '/game_rec.html';
+              document.location.href = "/game_rec.html";
             }
           });
         });
@@ -79,17 +79,22 @@
   </head>
   <body>
     <div class="jumbotron">
-      <button type="button" class="btn btn-outline-danger" onclick="goBack()">
-        Back
-      </button>
-      <h1 align="center">Input Child Info</h1>
+      <h1>
+        <button style="margin-right: 10px" type="button" class="btn btn-outline-danger" onclick="goBack()">
+          Back
+        </button>
+        Input Child Info
+      </h1>
     </div>
 
     <div id="child-info" align="center">
       <h3 style="padding-top:2vh">Gender</h3>
       <!--gender-->
-      <div class="btn-group btn-group-toggle" data-toggle="buttons"
-      id="gender-div">
+      <div
+        class="btn-group btn-group-toggle"
+        data-toggle="buttons"
+        id="gender-div"
+      >
         <label class="btn btn-light active">
           <input
             type="radio"
@@ -101,7 +106,13 @@
           <img class="gender-btn" src="picture/icon_girl.png" />
         </label>
         <label class="btn btn-light">
-          <input type="radio" name="options" id="option2" autocomplete="off" value="male"/>
+          <input
+            type="radio"
+            name="options"
+            id="option2"
+            autocomplete="off"
+            value="male"
+          />
           <img class="gender-btn" src="picture/icon_boy.png" />
         </label>
       </div>
@@ -168,15 +179,15 @@
             <img class="platform-btn" src="picture/icon_switch.png" />
           </label>
           <label class="btn btn-light">
-              <input
-                type="radio"
-                name="options"
-                id="option3"
-                autocomplete="off"
-                value="steam"
-              />
-              <img class="platform-btn" src="picture/icon_steam.png" />
-            </label>
+            <input
+              type="radio"
+              name="options"
+              id="option3"
+              autocomplete="off"
+              value="steam"
+            />
+            <img class="platform-btn" src="picture/icon_steam.png" />
+          </label>
         </div>
       </div>
 
@@ -284,11 +295,7 @@
       </div>
     </div>
 
-    <button
-      class="btn btn-outline-primary btn-lg btn-block"
-      id="submit_btn"
-      
-    >
+    <button class="btn btn-outline-primary btn-lg btn-block" id="submit_btn">
       Next
     </button>
   </body>
