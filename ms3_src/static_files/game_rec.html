@@ -36,44 +36,28 @@
           datatype: "json",
           success: data => {
             console.log(data);
-            // const game_names = Object.keys(data);
-            //$("#games").html("recommend : " + game_names[index]);
-            //$("#gameCover").html('<img class="gameCover" src="'+ data[game_names[index]].coverPic + '" />')
-            $("#games").html("recommend : " + data.name);
-            let imgurl = "" + data.cover.url;
-            $("#gameCover").html('<img class="gameCover" src="'+ imgurl + '" />');
+            $("#games").html("recommend : " + data[index].name);
+            $("#gameCover").html('<img class="gameCover" src="'+ data[index].cover.url + '" />');
           }
         });
 
         $("#showAnotherGame").click(() => {
-          // $.ajax({
-          //   url: "games/",
-          //   type: "GET",
-          //   datatype: "json",
-          //   success: data => {
-          //     const game_names = Object.keys(data);
-          //     if (index < game_names.length - 1) {
-          //       index++;
-          //     } else {
-          //       index = 0;
-          //     }
-          //     $("#games").html("recommend : " + game_names[index]);
-          //     $("#gameCover").html('<img class="gameCover" src="'+ data[game_names[index]].coverPic + '" />')
-          //   }
-          // });
-
+          // TODO: filter the previous one 
           $.ajax({
             url: "game_rec/",
             type: "GET",
             datatype: "json",
             success: data => {
-              console.log(data);
+              if (index < data.length-1) {
+                 index++;
+              } else {
+                 index = 0;
+              }
               // const game_names = Object.keys(data);
               //$("#games").html("recommend : " + game_names[index]);
               //$("#gameCover").html('<img class="gameCover" src="'+ data[game_names[index]].coverPic + '" />')
-              $("#games").html("recommend : " + data.name);
-              let imgurl = "" + data.cover.url;
-              $("#gameCover").html('<img class="gameCover" src="'+ imgurl + '" />');
+              $("#games").html("recommend : " + data[index].name);
+              $("#gameCover").html('<img class="gameCover" src="'+ data[index].cover.url + '" />');
             }
           });
         });

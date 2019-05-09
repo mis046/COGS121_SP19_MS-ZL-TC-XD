@@ -22,6 +22,9 @@ app.get('/games', (req, res) => {
   res.send(fakeDB);
 });
 
+// generate new game 
+// TODO: add firebase filter games in the data field
+// e.g. "& name != "xxx" & name != "xxx""
 app.get('/game_rec', (req,res) => {
   let result = "result";
   axios({
@@ -31,10 +34,10 @@ app.get('/game_rec', (req,res) => {
         'user-key': 'd90ddec63ca35266adbb5eee86e1b822'
     },
     data: "sort aggregated_rating desc;fields name,genres.name,aggregated_rating,age_ratings.rating,storyline,summary,cover.*;" 
-    + "where aggregated_rating != null & rating_count > 50 " + childInfoQuery + "; limit 1;"
+    + "where aggregated_rating != null & rating_count > 5 " + childInfoQuery + "; limit 5;"
   })
     .then(response => {
-        result = response.data[0]; // object result 
+        result = response.data; // object result 
         //console.log(result);
         res.send(result);   
     })
@@ -47,6 +50,8 @@ app.get('/game_rec', (req,res) => {
 
 const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({extended: true})); // hook up with your app
+
+// post childinfo to form part of the query  
 app.post('/game_rec', (req,res) => {
   childInfo = req.body;
   let genreQuery = " (";
