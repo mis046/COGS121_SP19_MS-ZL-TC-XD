@@ -47,6 +47,19 @@
           let curr_age = Number(document.getElementById("age").value);
           $("#age").val(curr_age + 1);
         });
+
+        $('#submit_btn').click(() => {
+          let age = $("#age").val();
+          let gender = $('#gender-div .active input').attr("value");
+          let platform = $('#platform-div .active input').attr("value");
+          let genres = [];
+          $.each($("#genre-div input:checked"), function(){            
+            genres.push($(this).attr("value"));
+          });
+          console.log("age: " + age + " gender: " + gender + " platform: " + platform + " genres: " + 
+          genres);
+          //document.location.href = '/game_rec.html';
+        });
       });
     </script>
   </head>
@@ -61,19 +74,20 @@
     <div id="child-info" align="center">
       <h3 style="padding-top:2vh">Gender</h3>
       <!--gender-->
-      <div class="btn-group btn-group-toggle" data-toggle="buttons">
+      <div class="btn-group btn-group-toggle" data-toggle="buttons"
+      id="gender-div">
         <label class="btn btn-light active">
           <input
             type="radio"
             name="options"
             id="option1"
             autocomplete="off"
-            checked
+            value="female"
           />
           <img class="gender-btn" src="picture/icon_girl.png" />
         </label>
         <label class="btn btn-light">
-          <input type="radio" name="options" id="option2" autocomplete="off" />
+          <input type="radio" name="options" id="option2" autocomplete="off" value="male"/>
           <img class="gender-btn" src="picture/icon_boy.png" />
         </label>
       </div>
@@ -115,6 +129,7 @@
               id="option1"
               autocomplete="off"
               checked
+              value="ps4"
             />
             <img class="platform-btn" src="picture/icon_ps4.png" />
           </label>
@@ -124,6 +139,7 @@
               name="options"
               id="option2"
               autocomplete="off"
+              value="xbox"
             />
             <img class="platform-btn" src="picture/icon_xbox.png" />
           </label>
@@ -133,6 +149,7 @@
               name="options"
               id="option3"
               autocomplete="off"
+              value="switch"
             />
             <img class="platform-btn" src="picture/icon_switch.png" />
           </label>
@@ -142,6 +159,7 @@
                 name="options"
                 id="option3"
                 autocomplete="off"
+                value="steam"
               />
               <img class="platform-btn" src="picture/icon_steam.png" />
             </label>
@@ -157,28 +175,31 @@
               <input
                 type="checkbox"
                 aria-label="Checkbox for following text input"
+                value="Fighting"
               />
             </div>
           </div>
-          <text class="form-control">Fiction</text>
+          <text class="form-control">Fighting</text>
           <div class="input-group-prepend">
             <div class="input-group-text">
               <input
                 type="checkbox"
                 aria-label="Checkbox for following text input"
+                value="Shooter"
               />
             </div>
           </div>
-          <text class="form-control">Romance</text>
+          <text class="form-control">Shooter</text>
           <div class="input-group-prepend">
             <div class="input-group-text">
               <input
                 type="checkbox"
                 aria-label="Checkbox for following text input"
+                value="Music"
               />
             </div>
           </div>
-          <text class="form-control">Sports</text>
+          <text class="form-control">Music</text>
         </div>
 
         <div id="genre-div" class="input-group mb-3">
@@ -187,6 +208,50 @@
               <input
                 type="checkbox"
                 aria-label="Checkbox for following text input"
+                value="Sport"
+              />
+            </div>
+          </div>
+          <text class="form-control">Sport</text>
+          <div class="input-group-prepend">
+            <div class="input-group-text">
+              <input
+                type="checkbox"
+                aria-label="Checkbox for following text input"
+                value="Role-playing(RPG)"
+              />
+            </div>
+          </div>
+          <text class="form-control">Role-playing(RPG)</text>
+          <div class="input-group-prepend">
+            <div class="input-group-text">
+              <input
+                type="checkbox"
+                aria-label="Checkbox for following text input"
+                value="Racing"
+              />
+            </div>
+          </div>
+          <text class="form-control">Racing</text>
+        </div>
+
+        <div id="genre-div" class="input-group mb-3">
+          <div class="input-group-prepend">
+            <div class="input-group-text">
+              <input
+                type="checkbox"
+                aria-label="Checkbox for following text input"
+                value="Strategy"
+              />
+            </div>
+          </div>
+          <text class="form-control">Strategy</text>
+          <div class="input-group-prepend">
+            <div class="input-group-text">
+              <input
+                type="checkbox"
+                aria-label="Checkbox for following text input"
+                value="Adventure"
               />
             </div>
           </div>
@@ -196,56 +261,19 @@
               <input
                 type="checkbox"
                 aria-label="Checkbox for following text input"
+                value="Puzzle"
               />
             </div>
           </div>
-          <text class="form-control">Role-play</text>
-          <div class="input-group-prepend">
-            <div class="input-group-text">
-              <input
-                type="checkbox"
-                aria-label="Checkbox for following text input"
-              />
-            </div>
-          </div>
-          <text class="form-control">Family</text>
-        </div>
-
-        <div id="genre-div" class="input-group mb-3">
-          <div class="input-group-prepend">
-            <div class="input-group-text">
-              <input
-                type="checkbox"
-                aria-label="Checkbox for following text input"
-              />
-            </div>
-          </div>
-          <text class="form-control">Board Game</text>
-          <div class="input-group-prepend">
-            <div class="input-group-text">
-              <input
-                type="checkbox"
-                aria-label="Checkbox for following text input"
-              />
-            </div>
-          </div>
-          <text class="form-control">Racing</text>
-          <div class="input-group-prepend">
-            <div class="input-group-text">
-              <input
-                type="checkbox"
-                aria-label="Checkbox for following text input"
-              />
-            </div>
-          </div>
-          <text class="form-control">Shooting</text>
+          <text class="form-control">Puzzle</text>
         </div>
       </div>
     </div>
 
     <button
       class="btn btn-outline-primary btn-lg btn-block"
-      onclick="window.location.href = '/game_rec.html'"
+      id="submit_btn"
+      
     >
       Next
     </button>
