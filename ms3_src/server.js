@@ -34,9 +34,9 @@ app.get("/game_rec", (req, res) => {
     },
     data:
       "sort aggregated_rating desc;fields name,genres.name,aggregated_rating,age_ratings.rating,storyline,summary,cover.*;" +
-      "where aggregated_rating != null & rating_count > 5 " +
+      "where aggregated_rating != null " +
       childInfoQuery +
-      "; limit 5;"
+      "; limit 10;"
   })
     .then(response => {
       result = response.data; // object result
