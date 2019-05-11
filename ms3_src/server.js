@@ -77,7 +77,7 @@ app.get("/game_rec", (req, res) => {
   })
     .then(response => {
       result = response.data; // object result
-      //console.log(result);
+      console.log(result);
       res.send(result[0]);
     })
     .catch(err => {
