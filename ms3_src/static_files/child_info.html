@@ -10,29 +10,23 @@
 
   <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
   <script src="https://www.gstatic.com/firebasejs/6.0.2/firebase-app.js"></script>
-
   <!-- Add Firebase products that you want to use -->
-  <script src="https://www.gstatic.com/firebasejs/6.0.2/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/6.0.2/firebase-firestore.js"></script>
   <script src="https://www.gstatic.com/firebasejs/3.1.0/firebase-database.js"></script>
 
-<!-- TODO: Add SDKs for Firebase products that you want to use
-     https://firebase.google.com/docs/web/setup#config-web-app -->
-
-<script>
-  // Your web app's Firebase configuration
-  var firebaseConfig = {
-    apiKey: "AIzaSyApxM5dVTvRHjfqNfD5xygT03JzTdyHBhs",
-    authDomain: "cogs121proj.firebaseapp.com",
-    databaseURL: "https://cogs121proj.firebaseio.com",
-    projectId: "cogs121proj",
-    storageBucket: "cogs121proj.appspot.com",
-    messagingSenderId: "75409493864",
-    appId: "1:75409493864:web:03c5b8c4be96c7db"
-  };
-  // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
-</script>
+  <script>
+    // Your web app's Firebase configuration
+    var firebaseConfig = {
+      apiKey: "AIzaSyApxM5dVTvRHjfqNfD5xygT03JzTdyHBhs",
+      authDomain: "cogs121proj.firebaseapp.com",
+      databaseURL: "https://cogs121proj.firebaseio.com",
+      projectId: "cogs121proj",
+      storageBucket: "cogs121proj.appspot.com",
+      messagingSenderId: "75409493864",
+      appId: "1:75409493864:web:03c5b8c4be96c7db"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+  </script>
 
   <!-- Bootstrap JS -->
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
@@ -53,8 +47,19 @@
   <script src="js/functions.js"></script>
   <script type="text/javascript">
     let index = 0;
+    let userID = "";
     $(document).ready(() => {
       const database = firebase.database();
+
+      // get login info 
+      $.ajax({
+        url: "login/",
+        type: "GET",
+        datatype: "json",
+        success: data => {
+          userID = data.ID;
+        }
+      });
 
       $("#minus").click(() => {
         let curr_age = Number(document.getElementById("age").value);
@@ -76,7 +81,7 @@
         });
         $.ajax({
           // all URLs are relative to http://localhost:3000/
-          url: "game_rec",
+          url: "child_info",
           type: "POST", // <-- this is POST, not GET
           data: {
             age: age,
@@ -85,10 +90,10 @@
             genres: genres
           },
           success: data => {
-            console.log("successfully post child info");
             document.location.href = "/game_rec.html";
 
-            database.ref('users/').set({
+            // store child info to db
+            database.ref(userID + '/childInfo/').set({
               age: age,
               gender: gender,
               platform: platform,

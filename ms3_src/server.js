@@ -4,9 +4,26 @@ const app = express();
 const axios = require("axios");
 var path = require("path");
 
+// initialize firebase db 
+var firebaseConfig = {
+  apiKey: "AIzaSyApxM5dVTvRHjfqNfD5xygT03JzTdyHBhs",
+  authDomain: "cogs121proj.firebaseapp.com",
+  databaseURL: "https://cogs121proj.firebaseio.com",
+  projectId: "cogs121proj",
+  storageBucket: "cogs121proj.appspot.com",
+  messagingSenderId: "75409493864",
+  appId: "1:75409493864:web:03c5b8c4be96c7db"
+};
+var firebase = require('firebase/app');
+require('firebase/database');
+firebase.initializeApp(firebaseConfig);
+const database = firebase.database();
+
+
 let childInfoQuery = "";
 let filterQuery = ""; // games that already been purchased
 let childInfo = {};
+let currUser = {};
 
 // setup static file location, /static
 app.use(express.static("static_files"));
@@ -16,9 +33,9 @@ app.listen(3000, () => {
   console.log("Server starts, http://localhost:3000/");
 });
 
-app.get("/games", (req, res) => {
-  const game_names = Object.keys(fakeDB);
-  res.send(fakeDB);
+// return current login user
+app.get("/login", (req, res) => {
+  res.send(currUser);
 });
 
 // generate new game
@@ -26,6 +43,22 @@ app.get("/games", (req, res) => {
 // e.g. "& name != "xxx" & name != "xxx""
 app.get("/game_rec", (req, res) => {
   let result = "result";
+
+  // build up filter game query 
+  // current game have a delay to appear on db, so need to be added manually
+  let currGame = req.query.name;
+  let query = firebase.database().ref(currUser.ID +  "/").orderByKey();
+  query.once("value")
+    .then(function(snapshot) {
+      filterQuery = "";
+      snapshot.child("library").forEach(function(childSnapshot) {
+        // key will be "ada" the first time and "alan" the second time
+        let filter_name = childSnapshot.val().name;
+        filterQuery += ' & name != "' + filter_name + '"';
+    });
+  });
+  filterQuery += ' & name != "' + currGame + '"';
+
   axios({
     url: "https://api-v3.igdb.com/games",
     method: "GET",
@@ -34,27 +67,29 @@ app.get("/game_rec", (req, res) => {
     },
     data:
       "sort aggregated_rating desc;fields name,genres.name,aggregated_rating,age_ratings.rating,storyline,summary,cover.*;" +
-      "where aggregated_rating != null " +
-      childInfoQuery +
-      "; limit 10;"
+      "where aggregated_rating != null" +
+      childInfoQuery + filterQuery + 
+      "; limit 1;"
   })
     .then(response => {
       result = response.data; // object result
       //console.log(result);
-      res.send(result);
+      res.send(result[0]);
     })
     .catch(err => {
       console.error(err);
     });
-  //const game1 = Object.keys(fakeDB);
-  //res.send(result);
+});
+
+// TODO: automatically fill the child info section, pass to child_info 
+app.get("/child_info", (req, res) => {
 });
 
 const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({ extended: true })); // hook up with your app
 
 // post childinfo to form part of the query
-app.post("/game_rec", (req, res) => {
+app.post("/child_info", (req, res) => {
   childInfo = req.body;
   let genreQuery = " (";
   for (const genre of childInfo.genres) {
@@ -64,14 +99,9 @@ app.post("/game_rec", (req, res) => {
   genreQuery = genreQuery + ")";
   childInfoQuery =
     "" + "& platforms = " + childInfo.platform + " &" + genreQuery;
-  console.log(childInfoQuery);
-  res.send("success");
-  // STORE THE DATA TO DB
+  res.send("successlly get child info");
 });
-
-//fakeDB
-const fakeDB = {
-  Pokemon: { age: 10, rating: 8, coverPic: "picture/game_pokemon.jpg" },
-  NBA2k: { age: 13, rating: 8.5, coverPic: "picture/game_nba2k.jpg" },
-  Sekiro: { age: 17, rating: 9.5, coverPic: "picture/game_sekiro.jpg" }
-};
+app.post("/login", (req, res) => {
+  currUser = req.body;
+  res.send(currUser);
+});
