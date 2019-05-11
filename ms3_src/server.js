@@ -59,6 +59,10 @@ app.get("/game_rec", (req, res) => {
   });
   filterQuery += ' & name != "' + currGame + '"';
 
+  // TODO: 1. add age filter
+  // TODO: 2. can retrieve more game details to pass to game_info.html
+  // TODO: 3. try to modify the query to get more games, current query will only return around 
+  // 30 games or less.
   axios({
     url: "https://api-v3.igdb.com/games",
     method: "GET",
