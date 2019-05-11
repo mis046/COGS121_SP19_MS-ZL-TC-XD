@@ -60,6 +60,7 @@ app.get("/game_rec", (req, res) => {
   filterQuery += ' & name != "' + currGame + '"';
 
   // TODO: 1. add age filter
+  // IGDB [0-5: 2,    6-9: 2/3;    10-12: 2/3/4,    13-16: 2/3/4/5,    17: 2/3/4/5/6,    18: 2/3/4/5/6/7]+5
   // TODO: 2. can retrieve more game details to pass to game_info.html
   // TODO: 3. try to modify the query to get more games, current query will only return around 
   // 30 games or less.
@@ -72,12 +73,12 @@ app.get("/game_rec", (req, res) => {
     data:
       "sort aggregated_rating desc;fields name,genres.name,aggregated_rating,age_ratings.rating,storyline,summary,cover.*;" +
       "where aggregated_rating != null" +
-      childInfoQuery + filterQuery + 
+      childInfoQuery + filterQuery +
       "; limit 1;"
   })
     .then(response => {
       result = response.data; // object result
-      console.log(result);
+      //console.log(result);
       res.send(result[0]);
     })
     .catch(err => {
@@ -95,6 +96,28 @@ app.use(bodyParser.urlencoded({ extended: true })); // hook up with your app
 // post childinfo to form part of the query
 app.post("/child_info", (req, res) => {
   childInfo = req.body;
+  let ageQuery = "( age_ratings.rating = ";
+  // make a age query base on age
+  let age = childInfo.age;
+  if (age >= 18) {
+    ageQuery += "(7,8,9,10,11,12) )"
+  }
+  else if (age >= 17) {
+    ageQuery += "(7,8,9,10,11) )"
+  }
+  else if (age >= 13) {
+    ageQuery += "(7,8,9,10) )"
+  }
+  else if (age >= 10) {
+    ageQuery += "(7,8,9) )"
+  }
+  else if (age >= 6) {
+    ageQuery += "(7,8) )"
+  }
+  else {
+    ageQuery += "(7) )"
+  }
+
   let genreQuery = " (";
   for (const genre of childInfo.genres) {
     genreQuery = genreQuery + ' (genres.name = "' + genre + '") |';
@@ -102,7 +125,7 @@ app.post("/child_info", (req, res) => {
   genreQuery = genreQuery.slice(0, -1);
   genreQuery = genreQuery + ")";
   childInfoQuery =
-    "" + "& platforms = " + childInfo.platform + " &" + genreQuery;
+    "" + "& platforms = " + childInfo.platform + " &" + genreQuery + " &" + ageQuery;
   res.send("successlly get child info");
 });
 app.post("/login", (req, res) => {
