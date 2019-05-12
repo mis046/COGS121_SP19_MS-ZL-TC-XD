@@ -38,7 +38,7 @@ app.get("/login", (req, res) => {
 });
 
 // generate new game
-// TODO: add firebase filter games in the data field
+// DONE: add firebase filter games in the data field
 // e.g. "& name != "xxx" & name != "xxx""
 app.get("/game_rec", (req, res) => {
   let result = "result";
@@ -62,7 +62,7 @@ app.get("/game_rec", (req, res) => {
 
   // Done: 1. add age filter
   // IGDB [0-5: 2,    6-9: 2/3;    10-12: 2/3/4,    13-16: 2/3/4/5,    17: 2/3/4/5/6,    18: 2/3/4/5/6/7]+5
-  // TODO: 2. can retrieve more game details to pass to game_info.html
+  // DONE: 2. can retrieve more game details to pass to game_info.html
   // TODO: 3. try to modify the query to get more games, current query will only return around
   // 30 games or less.
   axios({
@@ -88,8 +88,16 @@ app.get("/game_rec", (req, res) => {
     });
 });
 
-// TODO: automatically fill the child info section, pass to child_info
-app.get("/child_info", (req, res) => {});
+// DONE: automatically fill the child info section, pass to child_info
+app.get("/child_info", (req, res) => {
+  let query = firebase
+    .database()
+    .ref(currUser.ID + "/")
+    .orderByKey();
+  query.once("value").then(function(snapshot) {
+    res.send(snapshot.child("childInfo").val());
+  });
+});
 
 const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({ extended: true })); // hook up with your app

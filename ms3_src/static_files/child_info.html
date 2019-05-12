@@ -73,6 +73,42 @@
           }
         });
 
+        // get child info
+        $.ajax({
+          url: "child_info/",
+          type: "GET",
+          dataType: "json",
+          success: data => {
+            $("#age").val(data.age);
+            if (data.gender == 'female') {
+              $("#female").click();
+            } else {
+              $("#male").click();
+            }
+            if (data.platform == '48') {
+              $("#ps4").click();
+            } else if (data.platform == '49'){
+              $("#xbox").click();
+            } else if (data.platform == '130'){
+              $("#switch").click();
+            } else if (data.platform == '6'){
+              $("#pc").click();
+            }
+
+            for (let i = 0; i < data.genres.length; i++) {
+              // deal with spaces
+              if (data.genres[i] == "Role-playing (RPG)") {
+                $("#RPG").click();
+              }
+              else {
+                $("#"+data.genres[i]).click();
+              }
+            }
+
+          }
+        })
+
+
         $("#minus").click(() => {
           let curr_age = Number(document.getElementById("age").value);
           $("#age").val(curr_age - 1);
@@ -144,7 +180,7 @@
           <input
             type="radio"
             name="options"
-            id="option1"
+            id="female"
             autocomplete="off"
             value="female"
           />
@@ -154,7 +190,7 @@
           <input
             type="radio"
             name="options"
-            id="option2"
+            id="male"
             autocomplete="off"
             value="male"
           />
@@ -196,7 +232,7 @@
             <input
               type="radio"
               name="options"
-              id="option1"
+              id="ps4"
               autocomplete="off"
               checked
               value="48"
@@ -207,7 +243,7 @@
             <input
               type="radio"
               name="options"
-              id="option2"
+              id="xbox"
               autocomplete="off"
               value="49"
             />
@@ -217,7 +253,7 @@
             <input
               type="radio"
               name="options"
-              id="option3"
+              id="switch"
               autocomplete="off"
               value="130"
             />
@@ -227,7 +263,7 @@
             <input
               type="radio"
               name="options"
-              id="option3"
+              id="pc"
               autocomplete="off"
               value="6"
             />
@@ -243,6 +279,7 @@
           <div class="input-group-prepend">
             <div class="input-group-text">
               <input
+                id="Fighting"
                 type="checkbox"
                 aria-label="Checkbox for following text input"
                 value="Fighting"
@@ -253,6 +290,7 @@
           <div class="input-group-prepend">
             <div class="input-group-text">
               <input
+                id="Shooter"
                 type="checkbox"
                 aria-label="Checkbox for following text input"
                 value="Shooter"
@@ -263,6 +301,8 @@
           <div class="input-group-prepend">
             <div class="input-group-text">
               <input
+                id="Music"
+
                 type="checkbox"
                 aria-label="Checkbox for following text input"
                 value="Music"
@@ -276,6 +316,8 @@
           <div class="input-group-prepend">
             <div class="input-group-text">
               <input
+              id="Sport"
+
                 type="checkbox"
                 aria-label="Checkbox for following text input"
                 value="Sport"
@@ -286,6 +328,7 @@
           <div class="input-group-prepend">
             <div class="input-group-text">
               <input
+                id="RPG"
                 type="checkbox"
                 aria-label="Checkbox for following text input"
                 value="Role-playing (RPG)"
@@ -296,6 +339,7 @@
           <div class="input-group-prepend">
             <div class="input-group-text">
               <input
+              id="Racing"
                 type="checkbox"
                 aria-label="Checkbox for following text input"
                 value="Racing"
@@ -309,6 +353,7 @@
           <div class="input-group-prepend">
             <div class="input-group-text">
               <input
+              id="Strategy"
                 type="checkbox"
                 aria-label="Checkbox for following text input"
                 value="Strategy"
@@ -319,6 +364,8 @@
           <div class="input-group-prepend">
             <div class="input-group-text">
               <input
+              id="Adventure"
+
                 type="checkbox"
                 aria-label="Checkbox for following text input"
                 value="Adventure"
@@ -329,6 +376,8 @@
           <div class="input-group-prepend">
             <div class="input-group-text">
               <input
+              id="Puzzle"
+
                 type="checkbox"
                 aria-label="Checkbox for following text input"
                 value="Puzzle"

@@ -122,7 +122,7 @@
         });
 
         $("#showAnotherGame").click(() => {
-          // TODO: filter the previous one
+          // DONE: filter the previous one
           database.ref(userID + "/library/" + currGame.id + "/").set(currGame);
           $.ajax({
             url: "game_rec/",
