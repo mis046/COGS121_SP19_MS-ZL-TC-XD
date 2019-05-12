@@ -123,8 +123,10 @@ app.post("/child_info", (req, res) => {
   }
 
   let genreQuery = " (";
-  for (const genre of childInfo.genres) {
-    genreQuery = genreQuery + ' (genres.name = "' + genre + '") |';
+  if (childInfo.genres != undefined) {
+    for (const genre of childInfo.genres) {
+      genreQuery = genreQuery + ' (genres.name = "' + genre + '") |';
+    } 
   }
   genreQuery = genreQuery.slice(0, -1);
   genreQuery = genreQuery + ")";
