@@ -60,7 +60,7 @@ app.get("/game_rec", (req, res) => {
   });
   filterQuery += ' & name != "' + currGame + '"';
 
-  // TODO: 1. add age filter
+  // Done: 1. add age filter
   // IGDB [0-5: 2,    6-9: 2/3;    10-12: 2/3/4,    13-16: 2/3/4/5,    17: 2/3/4/5/6,    18: 2/3/4/5/6/7]+5
   // TODO: 2. can retrieve more game details to pass to game_info.html
   // TODO: 3. try to modify the query to get more games, current query will only return around
@@ -72,7 +72,7 @@ app.get("/game_rec", (req, res) => {
       "user-key": "d90ddec63ca35266adbb5eee86e1b822"
     },
     data:
-      "sort aggregated_rating desc;fields name,genres.name,aggregated_rating,age_ratings.rating,storyline,summary,cover.*;" +
+      "sort aggregated_rating desc;fields name,genres.name,aggregated_rating,age_ratings.rating,storyline,summary,screenshots.*,cover.*;" +
       "where aggregated_rating != null" +
       childInfoQuery +
       filterQuery +
@@ -80,7 +80,7 @@ app.get("/game_rec", (req, res) => {
   })
     .then(response => {
       result = response.data; // object result
-      //console.log(result);
+      //console.log(result); // LOG DATA
       res.send(result[0]);
     })
     .catch(err => {

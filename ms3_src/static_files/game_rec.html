@@ -84,14 +84,39 @@
           success: data => {
             currGame = data;
             if (currGame.cover != undefined) {
-              $("#games").html("recommend : " + currGame.name);
+              $("#games").html("<h4> Recommendation : " + currGame.name + "</h4>");
               $("#gameCover").html(
-                '<img class="gameCover" src="' + currGame.cover.url + '" />'
+                '<img class="gameCover" src="https://images.igdb.com/igdb/image/upload/t_720p/' +
+                  currGame.cover.image_id +
+                  '.jpg" />'
               );
             } else {
-              $("#games").html("No more games. Please reselect.");
+              $("#games").html("<h4> No more games. Please reselect. </h4>");
               $("#showAnotherGame").attr("disabled", true);
               $("#showGameDetail").attr("disabled", true);
+            }
+            if (currGame.screenshots != undefined) {
+              var i;
+              const screenShotNum = 4;
+              $("#screenshots").html("");
+              for (
+                i = 0;
+                i < currGame.screenshots.length && i <= screenShotNum;
+                i++
+              ) {
+                $("#screenshots").append(
+                  '<img class="screenshots" src="https://images.igdb.com/igdb/image/upload/t_720p/' +
+                    currGame.screenshots[i].image_id +
+                    '.jpg" />'
+                );
+              }
+            } else {
+              $("#screenshots").html("<h5>No screenshots</h5>");
+            }
+            if (currGame.summary != undefined) {
+              $("#summary").html("<h5> Summary: " + currGame.summary + "</h5>");
+            } else {
+              $("#summary").html("<h5> Sorry, no summary avaliable </h5>");
             }
           }
         });
@@ -107,14 +132,39 @@
             success: data => {
               currGame = data;
               if (currGame.cover != undefined) {
-                $("#games").html("recommend : " + currGame.name);
+                $("#games").html("<h4> Recommendation : " + currGame.name + "</h4>");
                 $("#gameCover").html(
-                  '<img class="gameCover" src="' + currGame.cover.url + '" />'
+                  '<img class="gameCover" src="https://images.igdb.com/igdb/image/upload/t_720p/' +
+                  currGame.cover.image_id +
+                  '.jpg" />'
                 );
               } else {
-                $("#games").html("No more games. Please reselect.");
+                $("#games").html("<h4> No more games. Please reselect. </4>");
                 $("#showAnotherGame").attr("disabled", true);
                 $("#showGameDetail").attr("disabled", true);
+              }
+              if (currGame.screenshots != undefined) {
+                var i;
+                const screenShotNum = 4;
+                $("#screenshots").html("");
+                for (
+                  i = 0;
+                  i < currGame.screenshots.length && i <= screenShotNum;
+                  i++
+                ) {
+                  $("#screenshots").append(
+                    '<img class="screenshots" src="https://images.igdb.com/igdb/image/upload/t_720p/' +
+                      currGame.screenshots[i].image_id +
+                      '.jpg" />'
+                  );
+                }
+              } else {
+                $("#screenshots").html("<h5>No screenshots</h5>");
+              }
+              if (currGame.summary != undefined) {
+                $("#summary").html("<h5>Summary: " + currGame.summary + "<h5>");
+              } else {
+                $("#summary").html("<h5>Sorry, no summary avaliable" + "<h5>");
               }
             }
           });
@@ -123,15 +173,53 @@
     </script>
   </head>
   <body>
-    <div id="gameCover"></div>
-    <div id="games"></div>
-    <button onclick="goBack()">Back</button>
-    <button id="showAnotherGame">Have it / Don't like it</button>
-    <button
-      id="showGameDetail"
-      onclick="window.location.href = '/game_info.html'"
-    >
-      Game Detail
-    </button>
+    <div class="jumbotron">
+        
+      <h1>
+          <button
+          type="button"
+          class="btn btn-outline-danger btn-lg"
+          id="back_btn"
+          onclick="goBack()"
+        >
+          Back
+        </button>
+        Perfect Game for Your Kid
+      </h1>
+    </div>
+    <div style="margin-left: 5vw" class="container-fluid">
+      <div class="row">
+        <div style="margin-right: 3vw" class="col-xl-">
+          <div id="gameCover"></div>
+        </div>
+        <div class="col-md-">
+          <div class="row-md">
+            <button
+              type="button"
+              class="btn btn-warning btn-lg btn-block"
+              id="showAnotherGame"
+            >
+              Have it / Don't like it
+            </button>
+          </div>
+          <div class="row-md">
+            <button
+              style="margin-top: 2vh"
+              type="button"
+              class="btn btn-info btn-lg btn-block"
+              onclick="window.location.href = '/buy.html'"
+            >
+              Buy
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container-fluid">
+      <div style="margin:3vw" id="games"></div>
+      <div style="margin:3vw" id="summary"></div>
+    </div>
+
+    <div id="screenshots"></div>
   </body>
 </html>
