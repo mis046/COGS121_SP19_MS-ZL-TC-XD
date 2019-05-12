@@ -10,6 +10,26 @@
       content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
 
+    <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/6.0.2/firebase-app.js"></script>
+    <!-- Add Firebase products that you want to use -->
+    <script src="https://www.gstatic.com/firebasejs/3.1.0/firebase-database.js"></script>
+
+    <script>
+      // Your web app's Firebase configuration
+      var firebaseConfig = {
+        apiKey: "AIzaSyApxM5dVTvRHjfqNfD5xygT03JzTdyHBhs",
+        authDomain: "cogs121proj.firebaseapp.com",
+        databaseURL: "https://cogs121proj.firebaseio.com",
+        projectId: "cogs121proj",
+        storageBucket: "cogs121proj.appspot.com",
+        messagingSenderId: "75409493864",
+        appId: "1:75409493864:web:03c5b8c4be96c7db"
+      };
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+    </script>
+
     <!-- Bootstrap JS -->
     <script
       src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
@@ -26,6 +46,7 @@
       integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
       crossorigin="anonymous"
     ></script>
+    <script src="jquery-3.3.1.min.js"></script>
 
     <!-- Bootstrap CSS -->
     <link
@@ -38,7 +59,56 @@
     <script src="js/functions.js"></script>
     <script type="text/javascript">
       let index = 0;
+      let userID = "";
       $(document).ready(() => {
+        const database = firebase.database();
+
+        // get login info
+        $.ajax({
+          url: "login/",
+          type: "GET",
+          datatype: "json",
+          success: data => {
+            userID = data.ID;
+          }
+        });
+
+        // get child info
+        $.ajax({
+          url: "child_info/",
+          type: "GET",
+          dataType: "json",
+          success: data => {
+            $("#age").val(data.age);
+            if (data.gender == 'female') {
+              $("#female").click();
+            } else {
+              $("#male").click();
+            }
+            if (data.platform == '48') {
+              $("#ps4").click();
+            } else if (data.platform == '49'){
+              $("#xbox").click();
+            } else if (data.platform == '130'){
+              $("#switch").click();
+            } else if (data.platform == '6'){
+              $("#pc").click();
+            }
+
+            for (let i = 0; i < data.genres.length; i++) {
+              // deal with spaces
+              if (data.genres[i] == "Role-playing (RPG)") {
+                $("#RPG").click();
+              }
+              else {
+                $("#"+data.genres[i]).click();
+              }
+            }
+
+          }
+        })
+
+
         $("#minus").click(() => {
           let curr_age = Number(document.getElementById("age").value);
           $("#age").val(curr_age - 1);
@@ -47,33 +117,83 @@
           let curr_age = Number(document.getElementById("age").value);
           $("#age").val(curr_age + 1);
         });
+
+        $("#submit_btn").click(() => {
+          let age = $("#age").val();
+          let gender = $("#gender-div .active input").attr("value");
+          let platform = $("#platform-div .active input").attr("value");
+          let genres = [];
+          $.each($("#genre-div input:checked"), function() {
+            genres.push($(this).attr("value"));
+          });
+          $.ajax({
+            // all URLs are relative to http://localhost:3000/
+            url: "child_info",
+            type: "POST", // <-- this is POST, not GET
+            data: {
+              age: age,
+              gender: gender,
+              platform: platform,
+              genres: genres
+            },
+            success: data => {
+              document.location.href = "/game_rec.html";
+
+              // store child info to db
+              database.ref(userID + "/childInfo/").set({
+                age: age,
+                gender: gender,
+                platform: platform,
+                genres: genres
+              });
+            }
+          });
+        });
       });
     </script>
   </head>
+
   <body>
     <div class="jumbotron">
-      <button type="button" class="btn btn-outline-danger" onclick="goBack()">
-        Back
-      </button>
-      <h1 align="center">Input Child Info</h1>
+      <h1>
+        <button
+          id="back_btn"
+          type="button"
+          class="btn btn-outline-danger btn-lg"
+          onclick="goBack()"
+        >
+          Back
+        </button>
+        Input Child Info
+      </h1>
     </div>
 
     <div id="child-info" align="center">
       <h3 style="padding-top:2vh">Gender</h3>
       <!--gender-->
-      <div class="btn-group btn-group-toggle" data-toggle="buttons">
+      <div
+        class="btn-group btn-group-toggle"
+        data-toggle="buttons"
+        id="gender-div"
+      >
         <label class="btn btn-light active">
           <input
             type="radio"
             name="options"
-            id="option1"
+            id="female"
             autocomplete="off"
-            checked
+            value="female"
           />
           <img class="gender-btn" src="picture/icon_girl.png" />
         </label>
         <label class="btn btn-light">
-          <input type="radio" name="options" id="option2" autocomplete="off" />
+          <input
+            type="radio"
+            name="options"
+            id="male"
+            autocomplete="off"
+            value="male"
+          />
           <img class="gender-btn" src="picture/icon_boy.png" />
         </label>
       </div>
@@ -112,9 +232,10 @@
             <input
               type="radio"
               name="options"
-              id="option1"
+              id="ps4"
               autocomplete="off"
               checked
+              value="48"
             />
             <img class="platform-btn" src="picture/icon_ps4.png" />
           </label>
@@ -122,8 +243,9 @@
             <input
               type="radio"
               name="options"
-              id="option2"
+              id="xbox"
               autocomplete="off"
+              value="49"
             />
             <img class="platform-btn" src="picture/icon_xbox.png" />
           </label>
@@ -131,20 +253,22 @@
             <input
               type="radio"
               name="options"
-              id="option3"
+              id="switch"
               autocomplete="off"
+              value="130"
             />
             <img class="platform-btn" src="picture/icon_switch.png" />
           </label>
           <label class="btn btn-light">
-              <input
-                type="radio"
-                name="options"
-                id="option3"
-                autocomplete="off"
-              />
-              <img class="platform-btn" src="picture/icon_steam.png" />
-            </label>
+            <input
+              type="radio"
+              name="options"
+              id="pc"
+              autocomplete="off"
+              value="6"
+            />
+            <img class="platform-btn" src="picture/icon_steam.png" />
+          </label>
         </div>
       </div>
 
@@ -155,38 +279,96 @@
           <div class="input-group-prepend">
             <div class="input-group-text">
               <input
+                id="Fighting"
                 type="checkbox"
                 aria-label="Checkbox for following text input"
+                value="Fighting"
               />
             </div>
           </div>
-          <text class="form-control">Fiction</text>
+          <text class="form-control">Fighting</text>
           <div class="input-group-prepend">
             <div class="input-group-text">
               <input
+                id="Shooter"
                 type="checkbox"
                 aria-label="Checkbox for following text input"
+                value="Shooter"
               />
             </div>
           </div>
-          <text class="form-control">Romance</text>
+          <text class="form-control">Shooter</text>
           <div class="input-group-prepend">
             <div class="input-group-text">
               <input
+                id="Music"
+
                 type="checkbox"
                 aria-label="Checkbox for following text input"
+                value="Music"
               />
             </div>
           </div>
-          <text class="form-control">Sports</text>
+          <text class="form-control">Music</text>
         </div>
 
         <div id="genre-div" class="input-group mb-3">
           <div class="input-group-prepend">
             <div class="input-group-text">
               <input
+              id="Sport"
+
                 type="checkbox"
                 aria-label="Checkbox for following text input"
+                value="Sport"
+              />
+            </div>
+          </div>
+          <text class="form-control">Sport</text>
+          <div class="input-group-prepend">
+            <div class="input-group-text">
+              <input
+                id="RPG"
+                type="checkbox"
+                aria-label="Checkbox for following text input"
+                value="Role-playing (RPG)"
+              />
+            </div>
+          </div>
+          <text class="form-control">Role-playing (RPG)</text>
+          <div class="input-group-prepend">
+            <div class="input-group-text">
+              <input
+              id="Racing"
+                type="checkbox"
+                aria-label="Checkbox for following text input"
+                value="Racing"
+              />
+            </div>
+          </div>
+          <text class="form-control">Racing</text>
+        </div>
+
+        <div id="genre-div" class="input-group mb-3">
+          <div class="input-group-prepend">
+            <div class="input-group-text">
+              <input
+              id="Strategy"
+                type="checkbox"
+                aria-label="Checkbox for following text input"
+                value="Strategy"
+              />
+            </div>
+          </div>
+          <text class="form-control">Strategy</text>
+          <div class="input-group-prepend">
+            <div class="input-group-text">
+              <input
+              id="Adventure"
+
+                type="checkbox"
+                aria-label="Checkbox for following text input"
+                value="Adventure"
               />
             </div>
           </div>
@@ -194,59 +376,20 @@
           <div class="input-group-prepend">
             <div class="input-group-text">
               <input
-                type="checkbox"
-                aria-label="Checkbox for following text input"
-              />
-            </div>
-          </div>
-          <text class="form-control">Role-play</text>
-          <div class="input-group-prepend">
-            <div class="input-group-text">
-              <input
-                type="checkbox"
-                aria-label="Checkbox for following text input"
-              />
-            </div>
-          </div>
-          <text class="form-control">Family</text>
-        </div>
+              id="Puzzle"
 
-        <div id="genre-div" class="input-group mb-3">
-          <div class="input-group-prepend">
-            <div class="input-group-text">
-              <input
                 type="checkbox"
                 aria-label="Checkbox for following text input"
+                value="Puzzle"
               />
             </div>
           </div>
-          <text class="form-control">Board Game</text>
-          <div class="input-group-prepend">
-            <div class="input-group-text">
-              <input
-                type="checkbox"
-                aria-label="Checkbox for following text input"
-              />
-            </div>
-          </div>
-          <text class="form-control">Racing</text>
-          <div class="input-group-prepend">
-            <div class="input-group-text">
-              <input
-                type="checkbox"
-                aria-label="Checkbox for following text input"
-              />
-            </div>
-          </div>
-          <text class="form-control">Shooting</text>
+          <text class="form-control">Puzzle</text>
         </div>
       </div>
     </div>
 
-    <button
-      class="btn btn-outline-primary btn-lg btn-block"
-      onclick="window.location.href = '/game_rec.html'"
-    >
+    <button class="btn btn-outline-primary btn-lg btn-block" id="submit_btn">
       Next
     </button>
   </body>

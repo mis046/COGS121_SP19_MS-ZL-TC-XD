@@ -9,11 +9,44 @@
       name="viewport"
       content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
+
+    <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/6.0.2/firebase-app.js"></script>
+    <!-- Add Firebase products that you want to use -->
+    <script src="https://www.gstatic.com/firebasejs/3.1.0/firebase-database.js"></script>
+
+    <script>
+      // Your web app's Firebase configuration
+      var firebaseConfig = {
+        apiKey: "AIzaSyApxM5dVTvRHjfqNfD5xygT03JzTdyHBhs",
+        authDomain: "cogs121proj.firebaseapp.com",
+        databaseURL: "https://cogs121proj.firebaseio.com",
+        projectId: "cogs121proj",
+        storageBucket: "cogs121proj.appspot.com",
+        messagingSenderId: "75409493864",
+        appId: "1:75409493864:web:03c5b8c4be96c7db"
+      };
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+    </script>
+
     <!-- Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-    
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+      integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+      crossorigin="anonymous"
+    ></script>
+
     <!-- Bootstrap CSS -->
     <link
       rel="stylesheet"
@@ -29,32 +62,110 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script type="text/javascript">
       let index = 0;
+      let userID = "";
+
       $(document).ready(() => {
+        const database = firebase.database();
+        let currGame = {}; // current game name
+
+        // get curr user
         $.ajax({
-          url: "games/",
+          url: "login/",
           type: "GET",
           datatype: "json",
           success: data => {
-            const game_names = Object.keys(data);
-            $("#games").html("recommend : " + game_names[index]);
-            $("#gameCover").html('<img class="gameCover" src="'+ data[game_names[index]].coverPic + '" />')
+            userID = data.ID;
+          }
+        });
+        $.ajax({
+          url: "game_rec/",
+          type: "GET",
+          datatype: "json",
+          success: data => {
+            currGame = data;
+            if (currGame.cover != undefined) {
+              $("#games").html("<h4> Recommendation : " + currGame.name + "</h4>");
+              $("#gameCover").html(
+                '<img class="gameCover" src="https://images.igdb.com/igdb/image/upload/t_720p/' +
+                  currGame.cover.image_id +
+                  '.jpg" />'
+              );
+            } else {
+              $("#games").html("<h4> No more games. Please reselect. </h4>");
+              $("#showAnotherGame").attr("disabled", true);
+              $("#showGameDetail").attr("disabled", true);
+            }
+            if (currGame.screenshots != undefined) {
+              var i;
+              const screenShotNum = 4;
+              $("#screenshots").html("");
+              for (
+                i = 0;
+                i < currGame.screenshots.length && i <= screenShotNum;
+                i++
+              ) {
+                $("#screenshots").append(
+                  '<img class="screenshots" src="https://images.igdb.com/igdb/image/upload/t_720p/' +
+                    currGame.screenshots[i].image_id +
+                    '.jpg" />'
+                );
+              }
+            } else {
+              $("#screenshots").html("<h5>No screenshots</h5>");
+            }
+            if (currGame.summary != undefined) {
+              $("#summary").html("<h5> Summary: " + currGame.summary + "</h5>");
+            } else {
+              $("#summary").html("<h5> Sorry, no summary avaliable </h5>");
+            }
           }
         });
 
         $("#showAnotherGame").click(() => {
+          // DONE: filter the previous one
+          database.ref(userID + "/library/" + currGame.id + "/").set(currGame);
           $.ajax({
-            url: "games/",
+            url: "game_rec/",
             type: "GET",
+            data: { name: currGame.name },
             datatype: "json",
             success: data => {
-              const game_names = Object.keys(data);
-              if (index < game_names.length - 1) {
-                index++;
+              currGame = data;
+              if (currGame.cover != undefined) {
+                $("#games").html("<h4> Recommendation : " + currGame.name + "</h4>");
+                $("#gameCover").html(
+                  '<img class="gameCover" src="https://images.igdb.com/igdb/image/upload/t_720p/' +
+                  currGame.cover.image_id +
+                  '.jpg" />'
+                );
               } else {
-                index = 0;
+                $("#games").html("<h4> No more games. Please reselect. </4>");
+                $("#showAnotherGame").attr("disabled", true);
+                $("#showGameDetail").attr("disabled", true);
               }
-              $("#games").html("recommend : " + game_names[index]);
-              $("#gameCover").html('<img class="gameCover" src="'+ data[game_names[index]].coverPic + '" />')
+              if (currGame.screenshots != undefined) {
+                var i;
+                const screenShotNum = 4;
+                $("#screenshots").html("");
+                for (
+                  i = 0;
+                  i < currGame.screenshots.length && i <= screenShotNum;
+                  i++
+                ) {
+                  $("#screenshots").append(
+                    '<img class="screenshots" src="https://images.igdb.com/igdb/image/upload/t_720p/' +
+                      currGame.screenshots[i].image_id +
+                      '.jpg" />'
+                  );
+                }
+              } else {
+                $("#screenshots").html("<h5>No screenshots</h5>");
+              }
+              if (currGame.summary != undefined) {
+                $("#summary").html("<h5>Summary: " + currGame.summary + "<h5>");
+              } else {
+                $("#summary").html("<h5>Sorry, no summary avaliable" + "<h5>");
+              }
             }
           });
         });
@@ -62,13 +173,53 @@
     </script>
   </head>
   <body>
-    <div id="gameCover">
+    <div class="jumbotron">
+        
+      <h1>
+          <button
+          type="button"
+          class="btn btn-outline-danger btn-lg"
+          id="back_btn"
+          onclick="goBack()"
+        >
+          Back
+        </button>
+        Perfect Game for Your Kid
+      </h1>
     </div>
-    <div id="games"></div>
-    <button onclick="goBack()">Back</button>
-    <button id="showAnotherGame">Show Another Game</button>
-    <button onclick="window.location.href = '/game_info.html'">
-      Game Detail
-    </button>
+    <div style="margin-left: 5vw" class="container-fluid">
+      <div class="row">
+        <div style="margin-right: 3vw" class="col-xl-">
+          <div id="gameCover"></div>
+        </div>
+        <div class="col-md-">
+          <div class="row-md">
+            <button
+              type="button"
+              class="btn btn-warning btn-lg btn-block"
+              id="showAnotherGame"
+            >
+              Have it / Don't like it
+            </button>
+          </div>
+          <div class="row-md">
+            <button
+              style="margin-top: 2vh"
+              type="button"
+              class="btn btn-info btn-lg btn-block"
+              onclick="window.location.href = '/buy.html'"
+            >
+              Buy
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container-fluid">
+      <div style="margin:3vw" id="games"></div>
+      <div style="margin:3vw" id="summary"></div>
+    </div>
+
+    <div id="screenshots"></div>
   </body>
 </html>

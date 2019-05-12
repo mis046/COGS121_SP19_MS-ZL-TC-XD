@@ -1,5 +1,10 @@
 .gameCover {
-  width: 200px;
+  width: 30vw;
+}
+
+.screenshots {
+  width: 80%;
+  margin: 20px;
 }
 
 .gender-btn {
@@ -17,6 +22,10 @@
 
 .form-control {
   font-size: 1.1vw;
+}
+
+#back_btn {
+  margin-right: 10px
 }
 
 #genre-div{
