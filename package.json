@@ -6,7 +6,11 @@
   "scripts": {
     "start": "node server.js"
   },
-  "author": "",
+  "repository": {
+      "type": "git",
+      "url": "https://github.com/mis046/COGS121_SP19_MS-ZL-TC-XD.git"
+  },
+  "author": "Firefrog",
   "license": "",
   "dependencies": {
     "axios": "^0.18.0",
