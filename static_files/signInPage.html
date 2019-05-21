@@ -5,9 +5,15 @@
 
     <!-- Required meta tags -->
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
-    <meta name="google-signin-client_id" 
-    content="75409493864-huo7mjlqk0f6q86tt51i1o6fslc6fu5s.apps.googleusercontent.com"> <!---
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta
+      name="google-signin-client_id"
+      content="75409493864-huo7mjlqk0f6q86tt51i1o6fslc6fu5s.apps.googleusercontent.com"
+    />
+    <!---
     content="984263070108-0ar7t6tmetghs2kefi121pfrv6nukvrh.apps.googleusercontent.com">-->
 
     <!-- Bootstrap JS -->
@@ -38,8 +44,8 @@
     <script src="https://www.gstatic.com/firebasejs/3.1.0/firebase-database.js"></script>
 
     <script>
-        // Your web app's Firebase configuration
-        var firebaseConfig = {
+      // Your web app's Firebase configuration
+      var firebaseConfig = {
         apiKey: "AIzaSyApxM5dVTvRHjfqNfD5xygT03JzTdyHBhs",
         authDomain: "cogs121proj.firebaseapp.com",
         databaseURL: "https://cogs121proj.firebaseio.com",
@@ -47,39 +53,36 @@
         storageBucket: "cogs121proj.appspot.com",
         messagingSenderId: "75409493864",
         appId: "1:75409493864:web:03c5b8c4be96c7db"
-        };
-        // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
+      };
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
     </script>
 
     <script type="text/javascript">
-        const database = firebase.database();
-        const userProfile = {ID: "", Name: "", Email: ""};
-        $(document).ready(() => {
+      const database = firebase.database();
+      const userProfile = { ID: "", Name: "", Email: "" };
+      $(document).ready(() => {});
+
+      function onSignIn(googleUser) {
+        var profile = googleUser.getBasicProfile();
+
+        userProfile.ID = profile.getId();
+        userProfile.Name = profile.getName();
+        userProfile.Email = profile.getEmail();
+        console.log(userProfile);
+
+        $.ajax({
+          // all URLs are relative to http://localhost:3000/
+          url: "login",
+          type: "POST", // <-- this is POST, not GET
+          data: userProfile,
+          success: data => {
+            console.log("successfully post user profile: " + data);
+            document.location.href = "/child_info.html";
+          }
         });
-
-        function onSignIn(googleUser) {
-            var profile = googleUser.getBasicProfile();
-
-            userProfile.ID = profile.getId();
-            userProfile.Name = profile.getName();
-            userProfile.Email = profile.getEmail();
-            console.log(userProfile);
-
-            $.ajax({
-                // all URLs are relative to http://localhost:3000/
-                url: "login",
-                type: "POST", // <-- this is POST, not GET
-                data: userProfile,
-                success: data => {
-                    console.log("successfully post user profile: " + data);
-                    document.location.href = "/child_info.html";
-                }
-            });
-        }
-
+      }
     </script>
-
 
     <!-- Bootstrap CSS -->
     <link
@@ -89,12 +92,33 @@
       crossorigin="anonymous"
     />
     <link rel="stylesheet" href="css/stylesheet.css" />
-
   </head>
   <body>
-    <div class="g-signin2" data-onsuccess="onSignIn"></div>
-    <button type="button"
-    class="btn btn-outline-warning"
-    id="showAnotherGame" onclick="window.location.href='/child_info.html'">Continue without login</button>
+          
+      <div class="row" style="margin-top: 4vh; margin-left: 5vw">
+        <div class="col-sm">
+          <h4>Store Data with Google</h4>
+          <div
+            class="g-signin2"
+            data-width="228"
+            data-height="50"
+            data-longtitle="true"
+            data-onsuccess="onSignIn"
+          ></div>
+        </div>
+      </div>
+      <div class="row" style="margin-top: 4vh; margin-left: 5vw">
+        <div class="col-lg">
+          <h4>Personal Data Would Not Be Recorded</h4>
+          <button
+            type="button"
+            class="btn btn-outline-primary btn-lg"
+            id="showAnotherGame"
+            onclick="window.location.href='/child_info.html'"
+          >
+            Continue Without Login
+          </button>
+        </div>
+      </div>
   </body>
 </html>
