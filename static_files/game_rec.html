@@ -94,7 +94,7 @@
               );
             } else {
               $("#games").html("<h4> No more games. Please reselect. </h4>");
-              $("#showAnotherGame").attr("disabled", true);
+              $("#addToMyLibrary").attr("disabled", true);
               $("#showGameDetail").attr("disabled", true);
             }
             if (currGame.screenshots != undefined) {
@@ -123,7 +123,7 @@
           }
         });
 
-        $("#showAnotherGame").click(() => {
+        $("#addToMyLibrary, #dontLikeIt, #alreadyHaveIt").click(() => {
           // DONE: filter the previous one
           database.ref(userID + "/library/" + currGame.id + "/").set(currGame);
           $.ajax({
@@ -144,7 +144,9 @@
                 );
               } else {
                 $("#games").html("<h4> No more games. Please reselect. </4>");
-                $("#showAnotherGame").attr("disabled", true);
+                $("#addToMyLibrary").attr("disabled", true);
+                $("#dontLikeIt").attr("disabled", true);
+                $("#alreadyHaveIt").attr("disabled", true);
                 $("#showGameDetail").attr("disabled", true);
               }
               if (currGame.screenshots != undefined) {
@@ -199,10 +201,30 @@
           <div class="row-md">
             <button
               type="button"
-              class="btn btn-warning btn-lg btn-block"
-              id="showAnotherGame"
+              class="btn btn-primary btn-lg btn-block"
+              id="addToMyLibrary"
             >
-              Have it / Don't like it
+              Add to My Library
+            </button>
+          </div>
+          <div class="row-md">
+            <button
+              style="margin-top: 2vh"
+              type="button"
+              class="btn btn-warning btn-lg btn-block"
+              id="alreadyHaveIt"
+            >
+              Already Have It
+            </button>
+          </div>
+          <div class="row-md">
+            <button
+              style="margin-top: 2vh"
+              type="button"
+              class="btn btn-danger btn-lg btn-block"
+              id="dontLikeIt"
+            >
+              Don't Like It
             </button>
           </div>
           <div class="row-md">
