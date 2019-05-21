@@ -84,7 +84,9 @@
           success: data => {
             currGame = data;
             if (currGame.cover != undefined) {
-              $("#games").html("<h4> Recommendation : " + currGame.name + "</h4>");
+              $("#games").html(
+                "<h4> Recommendation : " + currGame.name + "</h4>"
+              );
               $("#gameCover").html(
                 '<img class="gameCover" src="https://images.igdb.com/igdb/image/upload/t_720p/' +
                   currGame.cover.image_id +
@@ -132,11 +134,13 @@
             success: data => {
               currGame = data;
               if (currGame.cover != undefined) {
-                $("#games").html("<h4> Recommendation : " + currGame.name + "</h4>");
+                $("#games").html(
+                  "<h4> Recommendation : " + currGame.name + "</h4>"
+                );
                 $("#gameCover").html(
                   '<img class="gameCover" src="https://images.igdb.com/igdb/image/upload/t_720p/' +
-                  currGame.cover.image_id +
-                  '.jpg" />'
+                    currGame.cover.image_id +
+                    '.jpg" />'
                 );
               } else {
                 $("#games").html("<h4> No more games. Please reselect. </4>");
@@ -174,9 +178,8 @@
   </head>
   <body>
     <div class="jumbotron">
-        
       <h1>
-          <button
+        <button
           type="button"
           class="btn btn-outline-danger btn-lg"
           id="back_btn"
@@ -206,11 +209,18 @@
             <button
               style="margin-top: 2vh"
               type="button"
-              class="btn btn-info btn-lg btn-block"
-              onclick="window.location.href = '/buy.html'"
+              class="btn btn-info btn-lg btn-block dropdown-toggle"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
             >
-              Buy
+              Buy from
             </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="https://www.amazon.com/s?k=horizon+zero+dawn&crid=1T4A4FWQUUS39&sprefix=amazon+res%2Caps%2C198&ref=nb_sb_ss_i_1_10">Amazon</a>
+                <a class="dropdown-item" href="https://www.bestbuy.com/site/searchpage.jsp?st=horizon+zero+dawn&_dyncharset=UTF-8&id=pcat17071&type=page&sc=Global&cp=1&nrp=&sp=&qp=&list=n&af=true&iht=y&usc=All+Categories&ks=960&keys=keys">BestBuy</a>
+                <a class="dropdown-item" href="https://www.gamestop.com/browse?nav=16k-3-horizon+zero+dawn,28zu0">Gamestop</a>
+            </div>
           </div>
         </div>
       </div>
