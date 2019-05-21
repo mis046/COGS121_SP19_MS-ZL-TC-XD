@@ -34,6 +34,16 @@ app.listen(process.env.PORT || 3000, () => {
 
 // return current login user
 app.get("/login", (req, res) => {
+  // remove temp user data
+  var temp = firebase.database().ref("undefined");
+  temp
+    .remove()
+    .then(function() {
+      console.log("Remove guest user temp insucceeded.");
+    })
+    .catch(function(error) {
+      console.log("Remove guest user temp failed: " + error.message);
+    });
   res.send(currUser);
 });
 
@@ -126,7 +136,7 @@ app.post("/child_info", (req, res) => {
   if (childInfo.genres != undefined) {
     for (const genre of childInfo.genres) {
       genreQuery = genreQuery + ' (genres.name = "' + genre + '") |';
-    } 
+    }
   }
   genreQuery = genreQuery.slice(0, -1);
   genreQuery = genreQuery + ")";
