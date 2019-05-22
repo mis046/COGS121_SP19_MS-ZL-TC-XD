@@ -2,11 +2,6 @@
   padding: 2rem 2rem;
 }
 
-.gameCover {
-  width: 30vw;
-  height:40vw;
-}
-
 .screenshots {
   justify-content:center;
   width: 100%;
@@ -51,6 +46,13 @@
 
 #child-info {
   margin-bottom: 2vh;
+}
+
+/* For game_rec.html*/
+
+.gameCover {
+  width: 30vw;
+  height:40vw;
 }
 
 #game_rec{
