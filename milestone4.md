@@ -33,4 +33,4 @@
 ![alt text](https://github.com/mis046/COGS121_SP19_MS-ZL-TC-XD/blob/ms4/ms4_screenshots/Screen%20Shot%202019-05-22%20at%2010.43.43%20AM.png)
 
 ## Disliked Games
-![https://github.com/mis046/COGS121_SP19_MS-ZL-TC-XD/blob/ms4/ms4_screenshots/Screen%20Shot%202019-05-22%20at%2010.44.01%20AM.png]
+![alt text][https://github.com/mis046/COGS121_SP19_MS-ZL-TC-XD/blob/ms4/ms4_screenshots/Screen%20Shot%202019-05-22%20at%2010.44.01%20AM.png]
