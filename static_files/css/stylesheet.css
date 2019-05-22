@@ -1,3 +1,7 @@
+.jumbotron{
+  padding: 2rem 2rem;
+}
+
 .gameCover {
   width: 30vw;
   height:40vw;
