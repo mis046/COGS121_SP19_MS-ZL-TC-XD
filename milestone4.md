@@ -11,22 +11,26 @@
 
 ## Index
 
-![alt text](https://github.com/mis046/COGS121_SP19_MS-ZL-TC-XD/blob/master/ms3_screenshots/Screen%20Shot%202019-05-12%20at%207.39.24%20PM.png)
+![alt text](https://github.com/mis046/COGS121_SP19_MS-ZL-TC-XD/blob/ms4/ms4_screenshots/Screen%20Shot%202019-05-22%20at%2010.32.26%20AM.png)
 
 ## Login
 
-![alt_text](https://github.com/mis046/COGS121_SP19_MS-ZL-TC-XD/blob/master/ms3_screenshots/Screen%20Shot%202019-05-12%20at%207.40.40%20PM.png)
+![alt_text](https://github.com/mis046/COGS121_SP19_MS-ZL-TC-XD/blob/ms4/ms4_screenshots/Screen%20Shot%202019-05-22%20at%2010.33.12%20AM.png)
 
 ## Child Info
 
-![alt text](https://github.com/mis046/COGS121_SP19_MS-ZL-TC-XD/blob/master/ms3_screenshots/Screen%20Shot%202019-05-12%20at%207.40.24%20PM.png)
+![alt text](https://github.com/mis046/COGS121_SP19_MS-ZL-TC-XD/blob/ms4/ms4_screenshots/Screen%20Shot%202019-05-22%20at%2010.33.52%20AM.png)
 
 ## Game Recommendation
 
-![alt text](https://github.com/mis046/COGS121_SP19_MS-ZL-TC-XD/blob/master/ms3_screenshots/Screen%20Shot%202019-05-12%20at%2011.16.15%20PM.png)
+![alt text](https://github.com/mis046/COGS121_SP19_MS-ZL-TC-XD/blob/ms4/ms4_screenshots/Screen%20Shot%202019-05-22%20at%2010.42.29%20AM.png)
 
-![alt text](https://github.com/mis046/COGS121_SP19_MS-ZL-TC-XD/blob/master/ms3_screenshots/Screen%20Shot%202019-05-12%20at%2011.16.24%20PM.png)
+## Wishlist
 
-## Buy
+![alt text](https://github.com/mis046/COGS121_SP19_MS-ZL-TC-XD/blob/ms4/ms4_screenshots/Screen%20Shot%202019-05-22%20at%2010.43.28%20AM.png)
 
-![alt text](https://github.com/mis046/COGS121_SP19_MS-ZL-TC-XD/blob/master/ms3_screenshots/Screen%20Shot%202019-05-12%20at%207.41.02%20PM.png)
+## Owned Games
+![alt text](https://github.com/mis046/COGS121_SP19_MS-ZL-TC-XD/blob/ms4/ms4_screenshots/Screen%20Shot%202019-05-22%20at%2010.43.43%20AM.png)
+
+## Disliked Games
+![https://github.com/mis046/COGS121_SP19_MS-ZL-TC-XD/blob/ms4/ms4_screenshots/Screen%20Shot%202019-05-22%20at%2010.44.01%20AM.png]
