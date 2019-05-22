@@ -5,8 +5,7 @@
 #### Zhentao Lin  
 
 ## Milestone 4
-  In milestone 4, we updated the UIs for various pages. A navigation bar is added on the top of every page except for the index page and login page. Minor changes have been made in all content pages' title section for aesthetics. The UI for the game recommendation  is reworked to display the game name and summary on same row of the game cover page, and the buttons for wishlist, already have it, don't like it and purchase has been moved to the bottom of the game info section. A title was added for the screenshots section, and screenshot pictures were resized and re-aligned.
-  Functionality wise, users are now able to buy a recommended game directly from the option "Buy From". More functions were added including wishlist and blocked games(already owned and disliked). Games added to these pages will be stored for logged in users. Users will be able to purchase wishlisted games, and have the option to remove games from these pages.
+ changed by accident
 ## Screenshots
 
 ## Index
