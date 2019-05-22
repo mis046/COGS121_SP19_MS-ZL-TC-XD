@@ -125,6 +125,7 @@
 
         $("#addToWishList, #dontLikeIt, #alreadyHaveIt").click(() => {
           // DONE: filter the previous one
+          // TODO: The filtered game will now appear again after clicked twice
           database.ref(userID + "/library/" + currGame.id + "/").set(currGame);
           $.ajax({
             url: "game_rec/",
