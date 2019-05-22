@@ -7,14 +7,15 @@
     "start": "node server.js"
   },
   "repository": {
-      "type": "git",
-      "url": "https://github.com/mis046/COGS121_SP19_MS-ZL-TC-XD.git"
+    "type": "git",
+    "url": "https://github.com/mis046/COGS121_SP19_MS-ZL-TC-XD.git"
   },
   "author": "Firefrog",
   "license": "",
   "dependencies": {
     "axios": "^0.18.0",
     "express": "^4.16.3",
-    "firebase": "^6.0.2"
+    "firebase": "^6.0.2",
+    "nodemon": "^1.19.0"
   }
 }

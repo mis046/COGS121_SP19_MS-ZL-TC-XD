@@ -65,23 +65,44 @@
       $(document).ready(() => {
         const database = firebase.database();
 
-        // get curr user and get the library
+        // get curr user and get the owned
         $.ajax({
           url: "login/",
           type: "GET",
           datatype: "json",
           success: data => {
             userID = data.ID;
-            console.log(userID);
-            database.ref(userID + "/owned/").once("value", snapshot => {
-              const data = snapshot.val();
-              let keys = Object.keys(data);
-              for (index = 0; index < keys.length; index++) {
-                $("#games").append(
-                  "<h4> Included : " + data[keys[index]].name + "</h4>"
-                );
-              }
-            });
+            if ((userID == undefined)) {
+              $("#games").html("<h1>Login to use this option!</h1>");
+            } else {
+              database.ref(userID + "/owned/").once("value", snapshot => {
+                const data = snapshot.val();
+                let keys = Object.keys(data);
+                for (index = 0; index < keys.length; index++) {
+                  $("#games").append(
+                    '<img class="gameCover" src="https://images.igdb.com/igdb/image/upload/t_1080p/' +
+                      data[keys[index]].cover.image_id +
+                      '.jpg" />' +
+                      "<h4>" +
+                      data[keys[index]].name +
+                      "</h4>" +
+                      "<div id='" +
+                      data[keys[index]].cover.image_id +
+                      "'></div>"
+                  );
+                  $("#" + data[keys[index]].cover.image_id).load(
+                    "buy_button.html"
+                  );
+                  $("#games").append("<hr id='list_hr'>");
+
+                  /*$("#gameCover").append(
+                  '<img class="gameCover" src="https://images.igdb.com/igdb/image/upload/t_1080p/' +
+                  data[keys[index]].cover.image_id +
+                    '.jpg" />'
+                );*/
+                }
+              });
+            }
           }
         });
       });
@@ -97,14 +118,6 @@
     <div id="navbar"></div>
     <div class="jumbotron">
       <h1>
-        <button
-          type="button"
-          class="btn btn-outline-danger btn-lg"
-          id="back_btn"
-          onclick="goBack()"
-        >
-          Back
-        </button>
         Owned
       </h1>
     </div>
@@ -112,25 +125,6 @@
     <div class="container-fluid">
       <div style="margin:3vw" id="games"></div>
       <div style="margin:3vw" id="summary"></div>
-    </div>
-
-    <div style="margin-left: 5vw" class="container-fluid">
-      <div class="row">
-        <div style="margin-right: 3vw" class="col-xl-">
-          <div id="gameCover"></div>
-        </div>
-        <div class="col-md-">
-          <div class="row-md">
-            <button
-              style="margin-top: 2vh"
-              type="button"
-              class="btn btn-danger btn-lg btn-block"
-            >
-              Remove
-            </button>
-          </div>
-        </div>
-      </div>
     </div>
 
     <div id="screenshots"></div>
