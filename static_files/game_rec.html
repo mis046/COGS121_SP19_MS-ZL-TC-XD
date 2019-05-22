@@ -85,7 +85,7 @@
             currGame = data;
             if (currGame.cover != undefined) {
               $("#games").html(
-                "<h4> Recommendation : " + currGame.name + "</h4>"
+                "<h3> Recommendation : " + currGame.name + "</h3>"
               );
               $("#gameCover").html(
                 '<img class="gameCover" src="https://images.igdb.com/igdb/image/upload/t_1080p/' +
@@ -116,7 +116,7 @@
               $("#screenshots").html("<h5>No screenshots</h5>");
             }
             if (currGame.summary != undefined) {
-              $("#summary").html("<p> Summary: " + currGame.summary + "</p>");
+              $("#summary").html("<h5> Summary: " + currGame.summary + "</h5>");
             } else {
               $("#summary").html("<h5> Sorry, no summary avaliable </h5>");
             }
