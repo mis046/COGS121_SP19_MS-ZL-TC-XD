@@ -39,10 +39,10 @@ app.get("/login", (req, res) => {
   temp
     .remove()
     .then(function() {
-      console.log("Remove guest user temp insucceeded.");
+      //console.log("Remove guest user temp insucceeded.");
     })
     .catch(function(error) {
-      console.log("Remove guest user temp failed: " + error.message);
+      //console.log("Remove guest user temp failed: " + error.message);
     });
   res.send(currUser);
 });
@@ -62,7 +62,17 @@ app.get("/game_rec", (req, res) => {
     .orderByKey();
   query.once("value").then(function(snapshot) {
     filterQuery = "";
-    snapshot.child("library").forEach(function(childSnapshot) {
+    snapshot.child("dislike").forEach(function(childSnapshot) {
+      // key will be "ada" the first time and "alan" the second time
+      let filter_name = childSnapshot.val().name;
+      filterQuery += ' & name != "' + filter_name + '"';
+    });
+    snapshot.child("owned").forEach(function(childSnapshot) {
+      // key will be "ada" the first time and "alan" the second time
+      let filter_name = childSnapshot.val().name;
+      filterQuery += ' & name != "' + filter_name + '"';
+    });
+    snapshot.child("wishlist").forEach(function(childSnapshot) {
       // key will be "ada" the first time and "alan" the second time
       let filter_name = childSnapshot.val().name;
       filterQuery += ' & name != "' + filter_name + '"';
