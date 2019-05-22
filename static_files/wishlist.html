@@ -65,7 +65,7 @@
       $(document).ready(() => {
         const database = firebase.database();
 
-        // get curr user
+        // get curr user and get the library
         $.ajax({
           url: "login/",
           type: "GET",
@@ -73,10 +73,19 @@
           success: data => {
             userID = data.ID;
             console.log(userID);
+            database.ref(userID + "/library/").once("value", snapshot => {
+              const data = snapshot.val();
+              let keys = Object.keys(data);
+              let testvalue = keys[0];
+              let testinfo = data[testvalue].name;
+              for (index = 0; index < keys.length; index++) {
+                $("#games").append(
+                  "<h4> Included : " + data[keys[index]].name + "</h4>"
+                );
+              }
+            });
           }
         });
-
-        console.log("123" + userID);
       });
     </script>
     <script>
@@ -101,6 +110,12 @@
         Wishlist
       </h1>
     </div>
+
+    <div class="container-fluid">
+      <div style="margin:3vw" id="games"></div>
+      <div style="margin:3vw" id="summary"></div>
+    </div>
+
     <div style="margin-left: 5vw" class="container-fluid">
       <div class="row">
         <div style="margin-right: 3vw" class="col-xl-">
@@ -138,10 +153,6 @@
           </div>
         </div>
       </div>
-    </div>
-    <div class="container-fluid">
-      <div style="margin:3vw" id="games"></div>
-      <div style="margin:3vw" id="summary"></div>
     </div>
 
     <div id="screenshots"></div>

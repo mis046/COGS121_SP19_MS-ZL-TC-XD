@@ -61,6 +61,32 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script type="text/javascript">
+      let userID = "1";
+      $(document).ready(() => {
+        const database = firebase.database();
+
+        // get curr user and get the library
+        $.ajax({
+          url: "login/",
+          type: "GET",
+          datatype: "json",
+          success: data => {
+            userID = data.ID;
+            console.log(userID);
+            database.ref(userID + "/library/").once("value", snapshot => {
+              const data = snapshot.val();
+              let keys = Object.keys(data);
+              let testvalue = keys[0];
+              let testinfo = data[testvalue].name;
+              for (index = 0; index < keys.length; index++) {
+                $("#games").append(
+                  "<h4> Included : " + data[keys[index]].name + "</h4>"
+                );
+              }
+            });
+          }
+        });
+      });
     </script>
     <script>
       // include nav bar
