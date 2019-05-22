@@ -89,7 +89,7 @@ app.get("/game_rec", (req, res) => {
     url: "https://api-v3.igdb.com/games",
     method: "GET",
     headers: {
-      "user-key": "d90ddec63ca35266adbb5eee86e1b822"
+      "user-key": "5470ad431bfb8ec9c9e5d843842e707c"
     },
     data:
       "sort aggregated_rating desc;fields name,genres.name,aggregated_rating,age_ratings.rating,storyline,summary,screenshots.*,cover.*;" +
