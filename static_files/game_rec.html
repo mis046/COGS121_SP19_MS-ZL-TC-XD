@@ -116,7 +116,7 @@
               $("#screenshots").html("<h5>No screenshots</h5>");
             }
             if (currGame.summary != undefined) {
-              $("#summary").html("<h5> Summary: " + currGame.summary + "</h5>");
+              $("#summary").html("<p> Summary: " + currGame.summary + "</p>");
             } else {
               $("#summary").html("<h5> Sorry, no summary avaliable </h5>");
             }
@@ -308,78 +308,75 @@
         Perfect Game for Your Kid
       </h1>
     </div>
-    <div style="margin-left: 5vw" class="container-fluid">
-      <div class="row">
-        <div style="margin-right: 3vw" class="col-xl-">
+    <div class="container-fluid">
+      <div id="game_rec">
           <div id="gameCover"></div>
-        </div>
-        <div class="col-md-">
-          <div class="row-md">
-            <button
-              type="button"
-              class="btn btn-primary btn-lg btn-block"
-              id="addToWishList"
-            >
-              Add to Wish List
-            </button>
+          <div id="gamesAndSummary">
+            <div id="games"></div>
+            <hr>
+            <div id="summary"></div>
           </div>
-          <div class="row-md">
-            <button
-              style="margin-top: 2vh"
-              type="button"
-              class="btn btn-warning btn-lg btn-block"
-              id="alreadyHaveIt"
-            >
-              Already Have It
-            </button>
-          </div>
-          <div class="row-md">
-            <button
-              style="margin-top: 2vh"
-              type="button"
-              class="btn btn-danger btn-lg btn-block"
-              id="dontLikeIt"
-            >
-              Don't Like It
-            </button>
-          </div>
-          <div class="row-md">
-            <button
-              style="margin-top: 2vh"
-              type="button"
-              class="btn btn-info btn-lg btn-block dropdown-toggle"
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false"
-            >
-              Buy from
-            </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <a
-                class="dropdown-item"
-                href="https://www.amazon.com/s?k=horizon+zero+dawn&crid=1T4A4FWQUUS39&sprefix=amazon+res%2Caps%2C198&ref=nb_sb_ss_i_1_10"
-                >Amazon</a
-              >
-              <a
-                class="dropdown-item"
-                href="https://www.bestbuy.com/site/searchpage.jsp?st=horizon+zero+dawn&_dyncharset=UTF-8&id=pcat17071&type=page&sc=Global&cp=1&nrp=&sp=&qp=&list=n&af=true&iht=y&usc=All+Categories&ks=960&keys=keys"
-                >BestBuy</a
-              >
-              <a
-                class="dropdown-item"
-                href="https://www.gamestop.com/browse?nav=16k-3-horizon+zero+dawn,28zu0"
-                >Gamestop</a
-              >
-            </div>
-          </div>
+      </div>
+    <div id="options">
+      <div class="button">
+        <button
+          type="button"
+          class="btn btn-primary btn-lg btn-block"
+          id="addToWishList"
+        >
+          Add to Wishlist
+        </button>
+      </div>
+      <div class="button">
+        <button
+          type="button"
+          class="btn btn-warning btn-lg btn-block"
+          id="alreadyHaveIt"
+        >
+          Already Own It
+        </button>
+      </div>
+      <div class="button">
+        <button
+          type="button"
+          class="btn btn-danger btn-lg btn-block"
+          id="dontLikeIt"
+        >
+          Don't Like It
+        </button>
+      </div>
+      <div class="button">
+        <button
+          type="button"
+          class="btn btn-info btn-lg btn-block dropdown-toggle"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          Buy From
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <a
+            class="dropdown-item"
+            href="https://www.amazon.com/s?k=horizon+zero+dawn&crid=1T4A4FWQUUS39&sprefix=amazon+res%2Caps%2C198&ref=nb_sb_ss_i_1_10"
+            >Amazon</a
+          >
+          <a
+            class="dropdown-item"
+            href="https://www.bestbuy.com/site/searchpage.jsp?st=horizon+zero+dawn&_dyncharset=UTF-8&id=pcat17071&type=page&sc=Global&cp=1&nrp=&sp=&qp=&list=n&af=true&iht=y&usc=All+Categories&ks=960&keys=keys"
+            >BestBuy</a
+          >
+          <a
+            class="dropdown-item"
+            href="https://www.gamestop.com/browse?nav=16k-3-horizon+zero+dawn,28zu0"
+            >Gamestop</a
+          >
         </div>
       </div>
     </div>
-    <div class="container-fluid">
-      <div style="margin:3vw" id="games"></div>
-      <div style="margin:3vw" id="summary"></div>
-    </div>
-
+    <hr>
+    <h2 align="center">Screenshots</h2>
     <div id="screenshots"></div>
+  </div>
   </body>
 </html>

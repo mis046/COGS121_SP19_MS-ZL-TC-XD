@@ -1,10 +1,12 @@
-.gameCover {
-  width: 30vw;
+.jumbotron{
+  padding: 2rem 2rem;
 }
 
 .screenshots {
-  width: 80%;
-  margin: 20px;
+  justify-content:center;
+  width: 100%;
+  margin-top: 20px;
+  margin-bottom:20px;
 }
 
 .gender-btn {
@@ -56,4 +58,46 @@
   margin-bottom: 2vh;
 }
 
+/* For game_rec.html*/
 
+.gameCover {
+  width: 30vw;
+  height:40vw;
+}
+
+#game_rec{
+  display: flex;
+  align-items: center;
+  margin:2vw;
+}
+
+#gameCover{
+  width: 40%;
+  height: 100%;
+  vertical-align: text-top;
+  float:left;
+}
+#gamesAndSummary{
+  width: 60%;
+  height:100%;
+  float:left;
+}
+#games{
+  height: 20%;
+}
+#summary{
+  height: 80%;
+}
+
+#options{
+  width:100vw;
+  height:7vw;
+  margin:2vw;
+}
+
+.button{
+  width:20vw;
+  height:5vw;
+  margin:1vw;
+  float:left;
+}
