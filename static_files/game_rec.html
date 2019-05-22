@@ -123,10 +123,118 @@
           }
         });
 
-        $("#addToWishList, #dontLikeIt, #alreadyHaveIt").click(() => {
+        $("#addToWishList").click(() => {
           // DONE: filter the previous one
           // TODO: The filtered game will now appear again after clicked twice
-          database.ref(userID + "/library/" + currGame.id + "/").set(currGame);
+          database.ref(userID + "/wishlist/" + currGame.id + "/").set(currGame);
+          $.ajax({
+            url: "game_rec/",
+            type: "GET",
+            data: { name: currGame.name },
+            datatype: "json",
+            success: data => {
+              currGame = data;
+              if (currGame.cover != undefined) {
+                $("#games").html(
+                  "<h4> Recommendation : " + currGame.name + "</h4>"
+                );
+                $("#gameCover").html(
+                  '<img class="gameCover" src="https://images.igdb.com/igdb/image/upload/t_1080p/' +
+                    currGame.cover.image_id +
+                    '.jpg" />'
+                );
+              } else {
+                $("#games").html("<h4> No more games. Please reselect. </4>");
+                $("#addToWishList").attr("disabled", true);
+                $("#dontLikeIt").attr("disabled", true);
+                $("#alreadyHaveIt").attr("disabled", true);
+                $("#showGameDetail").attr("disabled", true);
+              }
+              if (currGame.screenshots != undefined) {
+                var i;
+                const screenShotNum = 4;
+                $("#screenshots").html("");
+                for (
+                  i = 0;
+                  i < currGame.screenshots.length && i <= screenShotNum;
+                  i++
+                ) {
+                  $("#screenshots").append(
+                    '<img class="screenshots" src="https://images.igdb.com/igdb/image/upload/t_1080p/' +
+                      currGame.screenshots[i].image_id +
+                      '.jpg" />'
+                  );
+                }
+              } else {
+                $("#screenshots").html("<h5>No screenshots</h5>");
+              }
+              if (currGame.summary != undefined) {
+                $("#summary").html("<h5>Summary: " + currGame.summary + "<h5>");
+              } else {
+                $("#summary").html("<h5>Sorry, no summary avaliable" + "<h5>");
+              }
+            }
+          });
+        });
+
+      $("#dontLikeIt").click(() => {
+          // DONE: filter the previous one
+          // TODO: The filtered game will now appear again after clicked twice
+          database.ref(userID + "/dislike/" + currGame.id + "/").set(currGame);
+          $.ajax({
+            url: "game_rec/",
+            type: "GET",
+            data: { name: currGame.name },
+            datatype: "json",
+            success: data => {
+              currGame = data;
+              if (currGame.cover != undefined) {
+                $("#games").html(
+                  "<h4> Recommendation : " + currGame.name + "</h4>"
+                );
+                $("#gameCover").html(
+                  '<img class="gameCover" src="https://images.igdb.com/igdb/image/upload/t_1080p/' +
+                    currGame.cover.image_id +
+                    '.jpg" />'
+                );
+              } else {
+                $("#games").html("<h4> No more games. Please reselect. </4>");
+                $("#addToWishList").attr("disabled", true);
+                $("#dontLikeIt").attr("disabled", true);
+                $("#alreadyHaveIt").attr("disabled", true);
+                $("#showGameDetail").attr("disabled", true);
+              }
+              if (currGame.screenshots != undefined) {
+                var i;
+                const screenShotNum = 4;
+                $("#screenshots").html("");
+                for (
+                  i = 0;
+                  i < currGame.screenshots.length && i <= screenShotNum;
+                  i++
+                ) {
+                  $("#screenshots").append(
+                    '<img class="screenshots" src="https://images.igdb.com/igdb/image/upload/t_1080p/' +
+                      currGame.screenshots[i].image_id +
+                      '.jpg" />'
+                  );
+                }
+              } else {
+                $("#screenshots").html("<h5>No screenshots</h5>");
+              }
+              if (currGame.summary != undefined) {
+                $("#summary").html("<h5>Summary: " + currGame.summary + "<h5>");
+              } else {
+                $("#summary").html("<h5>Sorry, no summary avaliable" + "<h5>");
+              }
+            }
+          });
+        });
+
+      $("#alreadyHaveIt").click(() => {
+          // DONE: filter the previous one
+          // TODO: The filtered game will now appear again after clicked twice
+          database.ref(userID + "/owned/" + currGame.id + "/").set(currGame);
           $.ajax({
             url: "game_rec/",
             type: "GET",

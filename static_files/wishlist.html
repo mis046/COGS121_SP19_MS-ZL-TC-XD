@@ -65,7 +65,7 @@
       $(document).ready(() => {
         const database = firebase.database();
 
-        // get curr user and get the library
+        // get curr user and get the wishlist
         $.ajax({
           url: "login/",
           type: "GET",
@@ -73,15 +73,18 @@
           success: data => {
             userID = data.ID;
             console.log(userID);
-            database.ref(userID + "/library/").once("value", snapshot => {
+            database.ref(userID + "/wishlist/").once("value", snapshot => {
               const data = snapshot.val();
               let keys = Object.keys(data);
-              let testvalue = keys[0];
-              let testinfo = data[testvalue].name;
               for (index = 0; index < keys.length; index++) {
                 $("#games").append(
                   "<h4> Included : " + data[keys[index]].name + "</h4>"
                 );
+                /*$("#gameCover").append(
+                  '<img class="gameCover" src="https://images.igdb.com/igdb/image/upload/t_1080p/' +
+                  data[keys[index]].cover.image_id +
+                    '.jpg" />'
+                );*/
               }
             });
           }
