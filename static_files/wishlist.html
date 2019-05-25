@@ -64,6 +64,10 @@
       let userID = "1";
       $(document).ready(() => {
         const database = firebase.database();
+        let amazonUrl = "https://www.amazon.com/s?k=";
+        let bestbuyUrl = "https://www.bestbuy.com/site/searchpage.jsp?st=";
+        let gamestopUrl = "https://www.gamestop.com/browse?nav=16k-3-";
+        let platform = "";
 
         // get curr user and get the wishlist
         $.ajax({
@@ -75,37 +79,50 @@
             if ((userID == undefined)) {
               $("#games").html("<h1>Login to use this option!</h1>");
             } else {
-              database.ref(userID + "/wishlist/").once("value", snapshot => {
-                const data = snapshot.val();
-                let keys = Object.keys(data);
-                for (index = 0; index < keys.length; index++) {
-                  $("#games").append(
-                    '<img class="gameCover" src="https://images.igdb.com/igdb/image/upload/t_1080p/' +
-                      data[keys[index]].cover.image_id +
-                      '.jpg" />' +
-                      "<h4>" +
-                      data[keys[index]].name +
-                      "</h4>" +
-                      "<div id='" +
-                      data[keys[index]].cover.image_id +
-                      "'></div>"
-                  );
-                  $("#" + data[keys[index]].cover.image_id).load(
-                    "buy_button.html"
-                  );
-                  $("#games").append("<hr id='list_hr'>");
-
-                  /*$("#gameCover").append(
-                  '<img class="gameCover" src="https://images.igdb.com/igdb/image/upload/t_1080p/' +
-                  data[keys[index]].cover.image_id +
-                    '.jpg" />'
-                );*/
+              database.ref(userID + "/childInfo/").once('value').then(function(snapshot) {
+                platform = snapshot.val()["platform"];
+                if (platform == 48) {
+                  platform = "ps4";
+                } else if (platform == 49) {
+                  platform = "xbox";
+                } else if (platform == 130) {
+                  platform = "switch";
                 }
-              });
-            }
-          }
-        });
-      });
+                database.ref(userID + "/wishlist/").once("value", snapshot => {
+                  const data = snapshot.val();
+                  let keys = Object.keys(data);
+                  for (index = 0; index < keys.length; index++) {
+
+                    $("#games").append(
+                      '<img class="gameCover" src="https://images.igdb.com/igdb/image/upload/t_1080p/' +
+                        data[keys[index]].cover.image_id +
+                        '.jpg" />' +
+                        "<h4>" +
+                        data[keys[index]].name +
+                        "</h4>" +
+                        "<div id='" +
+                        data[keys[index]].cover.image_id +
+                        "'></div>"
+                    );
+                    $("#" + data[keys[index]].cover.image_id).load(
+                      "buy_button.html"
+                    );
+                    $("#games").append("<hr id='list_hr'>");
+
+                    console.log(amazonUrl + data[keys[index]].name.replace(/[^A-Za-z0-9-\s]/g, '').replace(/\s/g, '+') + "+" + platform);
+                    $("#amazon").attr("href", amazonUrl + data[keys[index]].name.replace(/[^A-Za-z0-9-\s]/g, '').replace(/\s/g, '+') + "+" + platform);
+                    $("#bestbuy").attr("href", bestbuyUrl + data[keys[index]].name.replace(/[^A-Za-z0-9-\s]/g, '').replace(/\s/g, '+') + "+" + platform);
+                    $("#gamestop").attr("href", gamestopUrl + data[keys[index]].name.replace(/[^A-Za-z0-9-\s]/g, '').replace(/\s/g, '+') + "+" + platform + ",28zu0");
+
+
+                  } // end of for loop 
+                }); // end of db.ref(wishlist)
+              
+              }); // end of db.ref(childinfo)
+            } // end of else 
+          } // end of success function 
+        }); // end of login ajax 
+      }); // end of document ready
     </script>
     <script>
       $("#removeFromList").click(() => {

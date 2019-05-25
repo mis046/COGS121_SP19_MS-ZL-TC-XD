@@ -67,6 +67,10 @@
       $(document).ready(() => {
         const database = firebase.database();
         let currGame = {}; // current game name
+        let amazonUrl = "https://www.amazon.com/s?k=";
+        let bestbuyUrl = "https://www.bestbuy.com/site/searchpage.jsp?st=";
+        let gamestopUrl = "https://www.gamestop.com/browse?nav=16k-3-";
+        let platform = "";
 
         // get curr user
         $.ajax({
@@ -75,218 +79,247 @@
           datatype: "json",
           success: data => {
             userID = data.ID;
+            console.log("successfully logged in");
+            database.ref(userID + "/childInfo/").once('value').then(function(snapshot) {
+              platform = snapshot.val()["platform"];
+              if (platform == 48) {
+                platform = "ps4";
+              } else if (platform == 49) {
+                platform = "xbox";
+              } else if (platform == 130) {
+                platform = "switch";
+              }
+              $.ajax({
+                url: "game_rec/",
+                type: "GET",
+                datatype: "json",
+                success: data => {
+                  currGame = data;
+                  if (currGame.cover != undefined) {
+                    $("#amazon").attr("href", amazonUrl + currGame.name.replace(/[^A-Za-z0-9-\s]/g, '').replace(/\s/g, '+') + "+" + platform);
+                    $("#bestbuy").attr("href", bestbuyUrl + currGame.name.replace(/[^A-Za-z0-9-\s]/g, '').replace(/\s/g, '+') + "+" + platform);
+                    $("#gamestop").attr("href", gamestopUrl + currGame.name.replace(/[^A-Za-z0-9-\s]/g, '').replace(/\s/g, '+') + "+" + platform + ",28zu0");
+
+                    $("#games").html(
+                      "<h4> Recommendation : " + currGame.name + "</h4>"
+                    );
+                    $("#gameCover").html(
+                      '<img class="gameCover" src="https://images.igdb.com/igdb/image/upload/t_1080p/' +
+                        currGame.cover.image_id +
+                        '.jpg" />'
+                    );
+                  } else {
+                    $("#games").html("<h4> No more games. Please reselect. </h4>");
+                    $("#addToWishList").attr("disabled", true);
+                    $("#alreadyHaveIt").attr("disabled", true);
+                    $("#dontLikeIt").attr("disabled", true);
+                    $("#showGameDetail").attr("disabled", true);
+                  }
+                  if (currGame.screenshots != undefined) {
+                    var i;
+                    const screenShotNum = 4;
+                    $("#screenshots").html("");
+                    for (
+                      i = 0;
+                      i < currGame.screenshots.length && i <= screenShotNum;
+                      i++
+                    ) {
+                      $("#screenshots").append(
+                        '<img class="screenshots" src="https://images.igdb.com/igdb/image/upload/t_1080p/' +
+                          currGame.screenshots[i].image_id +
+                          '.jpg" />'
+                      );
+                    }
+                  } else {
+                    $("#screenshots").html("<h5>No screenshots</h5>");
+                  }
+                  if (currGame.summary != undefined) {
+                    $("#summary").html("<p> Summary: " + currGame.summary + "</p>");
+                  } else {
+                    $("#summary").html("<h5> Sorry, no summary avaliable </h5>");
+                  }
+                }
+              });
+
+              $("#addToWishList").click(() => {
+                // DONE: filter the previous one
+                // TODO: The filtered game will now appear again after clicked twice
+                database.ref(userID + "/wishlist/" + currGame.id + "/").set(currGame);
+                $.ajax({
+                  url: "game_rec/",
+                  type: "GET",
+                  data: { name: currGame.name },
+                  datatype: "json",
+                  success: data => {
+                    currGame = data;
+                    if (currGame.cover != undefined) {
+                      $("#amazon").attr("href", amazonUrl + currGame.name.replace(/[^A-Za-z0-9-\s]/g, '').replace(/\s/g, '+') + "+" + platform);
+                      $("#bestbuy").attr("href", bestbuyUrl + currGame.name.replace(/[^A-Za-z0-9-\s]/g, '').replace(/\s/g, '+') + "+" + platform);
+                      $("#gamestop").attr("href", gamestopUrl + currGame.name.replace(/[^A-Za-z0-9-\s]/g, '').replace(/\s/g, '+') + "+" + platform + ",28zu0");
+
+                      $("#games").html(
+                        "<h4> Recommendation : " + currGame.name + "</h4>"
+                      );
+                      $("#gameCover").html(
+                        '<img class="gameCover" src="https://images.igdb.com/igdb/image/upload/t_1080p/' +
+                          currGame.cover.image_id +
+                          '.jpg" />'
+                      );
+                    } else {
+                      $("#games").html("<h4> No more games. Please reselect. </4>");
+                      $("#addToWishList").attr("disabled", true);
+                      $("#dontLikeIt").attr("disabled", true);
+                      $("#alreadyHaveIt").attr("disabled", true);
+                      $("#showGameDetail").attr("disabled", true);
+                    }
+                    if (currGame.screenshots != undefined) {
+                      var i;
+                      const screenShotNum = 4;
+                      $("#screenshots").html("");
+                      for (
+                        i = 0;
+                        i < currGame.screenshots.length && i <= screenShotNum;
+                        i++
+                      ) {
+                        $("#screenshots").append(
+                          '<img class="screenshots" src="https://images.igdb.com/igdb/image/upload/t_1080p/' +
+                            currGame.screenshots[i].image_id +
+                            '.jpg" />'
+                        );
+                      }
+                    } else {
+                      $("#screenshots").html("<h5>No screenshots</h5>");
+                    }
+                    if (currGame.summary != undefined) {
+                      $("#summary").html("<h5>Summary: " + currGame.summary + "<h5>");
+                    } else {
+                      $("#summary").html("<h5>Sorry, no summary avaliable" + "<h5>");
+                    }
+                  }
+                });
+              });
+
+              $("#dontLikeIt").click(() => {
+                // DONE: filter the previous one
+                // TODO: The filtered game will now appear again after clicked twice
+                database.ref(userID + "/dislike/" + currGame.id + "/").set(currGame);
+                $.ajax({
+                  url: "game_rec/",
+                  type: "GET",
+                  data: { name: currGame.name },
+                  datatype: "json",
+                  success: data => {
+                    currGame = data;
+                    if (currGame.cover != undefined) {
+                      $("#amazon").attr("href", amazonUrl + currGame.name.replace(/[^A-Za-z0-9-\s]/g, '').replace(/\s/g, '+') + "+" + platform);
+                      $("#bestbuy").attr("href", bestbuyUrl + currGame.name.replace(/[^A-Za-z0-9-\s]/g, '').replace(/\s/g, '+') + "+" + platform);
+                      $("#gamestop").attr("href", gamestopUrl + currGame.name.replace(/[^A-Za-z0-9-\s]/g, '').replace(/\s/g, '+') + "+" + platform + ",28zu0");
+
+                      $("#games").html(
+                        "<h4> Recommendation : " + currGame.name + "</h4>"
+                      );
+                      $("#gameCover").html(
+                        '<img class="gameCover" src="https://images.igdb.com/igdb/image/upload/t_1080p/' +
+                          currGame.cover.image_id +
+                          '.jpg" />'
+                      );
+                    } else {
+                      $("#games").html("<h4> No more games. Please reselect. </4>");
+                      $("#addToWishList").attr("disabled", true);
+                      $("#dontLikeIt").attr("disabled", true);
+                      $("#alreadyHaveIt").attr("disabled", true);
+                      $("#showGameDetail").attr("disabled", true);
+                    }
+                    if (currGame.screenshots != undefined) {
+                      var i;
+                      const screenShotNum = 4;
+                      $("#screenshots").html("");
+                      for (
+                        i = 0;
+                        i < currGame.screenshots.length && i <= screenShotNum;
+                        i++
+                      ) {
+                        $("#screenshots").append(
+                          '<img class="screenshots" src="https://images.igdb.com/igdb/image/upload/t_1080p/' +
+                            currGame.screenshots[i].image_id +
+                            '.jpg" />'
+                        );
+                      }
+                    } else {
+                      $("#screenshots").html("<h5>No screenshots</h5>");
+                    }
+                    if (currGame.summary != undefined) {
+                      $("#summary").html("<h5>Summary: " + currGame.summary + "<h5>");
+                    } else {
+                      $("#summary").html("<h5>Sorry, no summary avaliable" + "<h5>");
+                    }
+                  }
+                });
+              });
+
+              $("#alreadyHaveIt").click(() => {
+                // DONE: filter the previous one
+                // TODO: The filtered game will now appear again after clicked twice
+                database.ref(userID + "/owned/" + currGame.id + "/").set(currGame);
+                $.ajax({
+                  url: "game_rec/",
+                  type: "GET",
+                  data: { name: currGame.name },
+                  datatype: "json",
+                  success: data => {
+                    currGame = data;
+                    if (currGame.cover != undefined) {
+                      $("#amazon").attr("href", amazonUrl + currGame.name.replace(/[^A-Za-z0-9-\s]/g, '').replace(/\s/g, '+') + "+" + platform);
+                      $("#bestbuy").attr("href", bestbuyUrl + currGame.name.replace(/[^A-Za-z0-9-\s]/g, '').replace(/\s/g, '+') + "+" + platform);
+                      $("#gamestop").attr("href", gamestopUrl + currGame.name.replace(/[^A-Za-z0-9-\s]/g, '').replace(/\s/g, '+') + "+" + platform + ",28zu0");
+
+                      $("#games").html(
+                        "<h4> Recommendation : " + currGame.name + "</h4>"
+                      );
+                      $("#gameCover").html(
+                        '<img class="gameCover" src="https://images.igdb.com/igdb/image/upload/t_1080p/' +
+                          currGame.cover.image_id +
+                          '.jpg" />'
+                      );
+                    } else {
+                      $("#games").html("<h4> No more games. Please reselect. </4>");
+                      $("#addToWishList").attr("disabled", true);
+                      $("#dontLikeIt").attr("disabled", true);
+                      $("#alreadyHaveIt").attr("disabled", true);
+                      $("#showGameDetail").attr("disabled", true);
+                    }
+                    if (currGame.screenshots != undefined) {
+                      var i;
+                      const screenShotNum = 4;
+                      $("#screenshots").html("");
+                      for (
+                        i = 0;
+                        i < currGame.screenshots.length && i <= screenShotNum;
+                        i++
+                      ) {
+                        $("#screenshots").append(
+                          '<img class="screenshots" src="https://images.igdb.com/igdb/image/upload/t_1080p/' +
+                            currGame.screenshots[i].image_id +
+                            '.jpg" />'
+                        );
+                      }
+                    } else {
+                      $("#screenshots").html("<h5>No screenshots</h5>");
+                    }
+                    if (currGame.summary != undefined) {
+                      $("#summary").html("<h5>Summary: " + currGame.summary + "<h5>");
+                    } else {
+                      $("#summary").html("<h5>Sorry, no summary avaliable" + "<h5>");
+                    }
+                  }
+                });
+              });
+
+
+            });
           }
         });
-        $.ajax({
-          url: "game_rec/",
-          type: "GET",
-          datatype: "json",
-          success: data => {
-            currGame = data;
-            if (currGame.cover != undefined) {
-              $("#games").html(
-                "<h4> Recommendation : " + currGame.name + "</h4>"
-              );
-              $("#gameCover").html(
-                '<img class="gameCover" src="https://images.igdb.com/igdb/image/upload/t_1080p/' +
-                  currGame.cover.image_id +
-                  '.jpg" />'
-              );
-            } else {
-              $("#games").html("<h4> No more games. Please reselect. </h4>");
-              $("#addToWishList").attr("disabled", true);
-              $("#alreadyHaveIt").attr("disabled", true);
-              $("#dontLikeIt").attr("disabled", true);
-              $("#showGameDetail").attr("disabled", true);
-            }
-            if (currGame.screenshots != undefined) {
-              var i;
-              const screenShotNum = 4;
-              $("#screenshots").html("");
-              for (
-                i = 0;
-                i < currGame.screenshots.length && i <= screenShotNum;
-                i++
-              ) {
-                $("#screenshots").append(
-                  '<img class="screenshots" src="https://images.igdb.com/igdb/image/upload/t_1080p/' +
-                    currGame.screenshots[i].image_id +
-                    '.jpg" />'
-                );
-              }
-            } else {
-              $("#screenshots").html("<h5>No screenshots</h5>");
-            }
-            if (currGame.summary != undefined) {
-              $("#summary").html("<p> Summary: " + currGame.summary + "</p>");
-            } else {
-              $("#summary").html("<h5> Sorry, no summary avaliable </h5>");
-            }
-          }
-        });
-
-        $("#addToWishList").click(() => {
-          // DONE: filter the previous one
-          // TODO: The filtered game will now appear again after clicked twice
-          database.ref(userID + "/wishlist/" + currGame.id + "/").set(currGame);
-          $.ajax({
-            url: "game_rec/",
-            type: "GET",
-            data: { name: currGame.name },
-            datatype: "json",
-            success: data => {
-              currGame = data;
-              if (currGame.cover != undefined) {
-                $("#games").html(
-                  "<h4> Recommendation : " + currGame.name + "</h4>"
-                );
-                $("#gameCover").html(
-                  '<img class="gameCover" src="https://images.igdb.com/igdb/image/upload/t_1080p/' +
-                    currGame.cover.image_id +
-                    '.jpg" />'
-                );
-              } else {
-                $("#games").html("<h4> No more games. Please reselect. </4>");
-                $("#addToWishList").attr("disabled", true);
-                $("#dontLikeIt").attr("disabled", true);
-                $("#alreadyHaveIt").attr("disabled", true);
-                $("#showGameDetail").attr("disabled", true);
-              }
-              if (currGame.screenshots != undefined) {
-                var i;
-                const screenShotNum = 4;
-                $("#screenshots").html("");
-                for (
-                  i = 0;
-                  i < currGame.screenshots.length && i <= screenShotNum;
-                  i++
-                ) {
-                  $("#screenshots").append(
-                    '<img class="screenshots" src="https://images.igdb.com/igdb/image/upload/t_1080p/' +
-                      currGame.screenshots[i].image_id +
-                      '.jpg" />'
-                  );
-                }
-              } else {
-                $("#screenshots").html("<h5>No screenshots</h5>");
-              }
-              if (currGame.summary != undefined) {
-                $("#summary").html("<h5>Summary: " + currGame.summary + "<h5>");
-              } else {
-                $("#summary").html("<h5>Sorry, no summary avaliable" + "<h5>");
-              }
-            }
-          });
-        });
-
-      $("#dontLikeIt").click(() => {
-          // DONE: filter the previous one
-          // TODO: The filtered game will now appear again after clicked twice
-          database.ref(userID + "/dislike/" + currGame.id + "/").set(currGame);
-          $.ajax({
-            url: "game_rec/",
-            type: "GET",
-            data: { name: currGame.name },
-            datatype: "json",
-            success: data => {
-              currGame = data;
-              if (currGame.cover != undefined) {
-                $("#games").html(
-                  "<h4> Recommendation : " + currGame.name + "</h4>"
-                );
-                $("#gameCover").html(
-                  '<img class="gameCover" src="https://images.igdb.com/igdb/image/upload/t_1080p/' +
-                    currGame.cover.image_id +
-                    '.jpg" />'
-                );
-              } else {
-                $("#games").html("<h4> No more games. Please reselect. </4>");
-                $("#addToWishList").attr("disabled", true);
-                $("#dontLikeIt").attr("disabled", true);
-                $("#alreadyHaveIt").attr("disabled", true);
-                $("#showGameDetail").attr("disabled", true);
-              }
-              if (currGame.screenshots != undefined) {
-                var i;
-                const screenShotNum = 4;
-                $("#screenshots").html("");
-                for (
-                  i = 0;
-                  i < currGame.screenshots.length && i <= screenShotNum;
-                  i++
-                ) {
-                  $("#screenshots").append(
-                    '<img class="screenshots" src="https://images.igdb.com/igdb/image/upload/t_1080p/' +
-                      currGame.screenshots[i].image_id +
-                      '.jpg" />'
-                  );
-                }
-              } else {
-                $("#screenshots").html("<h5>No screenshots</h5>");
-              }
-              if (currGame.summary != undefined) {
-                $("#summary").html("<h5>Summary: " + currGame.summary + "<h5>");
-              } else {
-                $("#summary").html("<h5>Sorry, no summary avaliable" + "<h5>");
-              }
-            }
-          });
-        });
-
-      $("#alreadyHaveIt").click(() => {
-          // DONE: filter the previous one
-          // TODO: The filtered game will now appear again after clicked twice
-          database.ref(userID + "/owned/" + currGame.id + "/").set(currGame);
-          $.ajax({
-            url: "game_rec/",
-            type: "GET",
-            data: { name: currGame.name },
-            datatype: "json",
-            success: data => {
-              currGame = data;
-              if (currGame.cover != undefined) {
-                $("#games").html(
-                  "<h4> Recommendation : " + currGame.name + "</h4>"
-                );
-                $("#gameCover").html(
-                  '<img class="gameCover" src="https://images.igdb.com/igdb/image/upload/t_1080p/' +
-                    currGame.cover.image_id +
-                    '.jpg" />'
-                );
-              } else {
-                $("#games").html("<h4> No more games. Please reselect. </4>");
-                $("#addToWishList").attr("disabled", true);
-                $("#dontLikeIt").attr("disabled", true);
-                $("#alreadyHaveIt").attr("disabled", true);
-                $("#showGameDetail").attr("disabled", true);
-              }
-              if (currGame.screenshots != undefined) {
-                var i;
-                const screenShotNum = 4;
-                $("#screenshots").html("");
-                for (
-                  i = 0;
-                  i < currGame.screenshots.length && i <= screenShotNum;
-                  i++
-                ) {
-                  $("#screenshots").append(
-                    '<img class="screenshots" src="https://images.igdb.com/igdb/image/upload/t_1080p/' +
-                      currGame.screenshots[i].image_id +
-                      '.jpg" />'
-                  );
-                }
-              } else {
-                $("#screenshots").html("<h5>No screenshots</h5>");
-              }
-              if (currGame.summary != undefined) {
-                $("#summary").html("<h5>Summary: " + currGame.summary + "<h5>");
-              } else {
-                $("#summary").html("<h5>Sorry, no summary avaliable" + "<h5>");
-              }
-            }
-          });
-        });
-      });
+      })
     </script>
     <script>
       // include nav bar
@@ -312,73 +345,76 @@
     </div>
     <div class="container-fluid">
       <div id="game_rec">
-          <div id="gameCover"></div>
-          <div id="gamesAndSummary">
-            <div id="games"></div>
-            <hr>
-            <div id="summary"></div>
-          </div>
-      </div>
-    <div id="options">
-      <div class="button">
-        <button
-          type="button"
-          class="btn btn-primary btn-lg btn-block"
-          id="addToWishList"
-        >
-          Add to Wishlist
-        </button>
-      </div>
-      <div class="button">
-        <button
-          type="button"
-          class="btn btn-warning btn-lg btn-block"
-          id="alreadyHaveIt"
-        >
-          Already Own It
-        </button>
-      </div>
-      <div class="button">
-        <button
-          type="button"
-          class="btn btn-danger btn-lg btn-block"
-          id="dontLikeIt"
-        >
-          Don't Like It
-        </button>
-      </div>
-      <div class="button">
-        <button
-          type="button"
-          class="btn btn-info btn-lg btn-block dropdown-toggle"
-          data-toggle="dropdown"
-          aria-haspopup="true"
-          aria-expanded="false"
-        >
-          Buy From
-        </button>
-        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-          <a
-            class="dropdown-item"
-            href="https://www.amazon.com/s?k=horizon+zero+dawn&crid=1T4A4FWQUUS39&sprefix=amazon+res%2Caps%2C198&ref=nb_sb_ss_i_1_10"
-            >Amazon</a
-          >
-          <a
-            class="dropdown-item"
-            href="https://www.bestbuy.com/site/searchpage.jsp?st=horizon+zero+dawn&_dyncharset=UTF-8&id=pcat17071&type=page&sc=Global&cp=1&nrp=&sp=&qp=&list=n&af=true&iht=y&usc=All+Categories&ks=960&keys=keys"
-            >BestBuy</a
-          >
-          <a
-            class="dropdown-item"
-            href="https://www.gamestop.com/browse?nav=16k-3-horizon+zero+dawn,28zu0"
-            >Gamestop</a
-          >
+        <div id="gameCover"></div>
+        <div id="gamesAndSummary">
+          <div id="games"></div>
+          <hr />
+          <div id="summary"></div>
         </div>
       </div>
+      <div id="options">
+        <div class="button">
+          <button
+            type="button"
+            class="btn btn-primary btn-lg btn-block"
+            id="addToWishList"
+          >
+            Add to Wishlist
+          </button>
+        </div>
+        <div class="button">
+          <button
+            type="button"
+            class="btn btn-warning btn-lg btn-block"
+            id="alreadyHaveIt"
+          >
+            Already Own It
+          </button>
+        </div>
+        <div class="button">
+          <button
+            type="button"
+            class="btn btn-danger btn-lg btn-block"
+            id="dontLikeIt"
+          >
+            Don't Like It
+          </button>
+        </div>
+        <div class="button">
+          <button
+            type="button"
+            class="btn btn-info btn-lg btn-block dropdown-toggle"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            Buy From
+          </button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a
+              class="dropdown-item"
+              id="amazon"
+              href="https://www.amazon.com/s?k=horizon+zero+dawn&crid=1T4A4FWQUUS39&sprefix=amazon+res%2Caps%2C198&ref=nb_sb_ss_i_1_10"
+              >Amazon</a
+            >
+            <a
+              class="dropdown-item"
+              id="bestbuy"
+              href="https://www.bestbuy.com/site/searchpage.jsp?st=horizon+zero+dawn&_dyncharset=UTF-8&id=pcat17071&type=page&sc=Global&cp=1&nrp=&sp=&qp=&list=n&af=true&iht=y&usc=All+Categories&ks=960&keys=keys"
+              >BestBuy</a
+            >
+            <a
+              class="dropdown-item"
+              id="gamestop"
+              href="https://www.gamestop.com/browse?nav=16k-3-horizon+zero+dawn,28zu0"
+              >Gamestop</a
+            >
+          </div>
+        </div>
+      </div>
+      <hr />
+      <h2 align="center">Screenshots</h2>
+      <div id="screenshots"></div>
     </div>
-    <hr>
-    <h2 align="center">Screenshots</h2>
-    <div id="screenshots"></div>
-  </div>
   </body>
 </html>
