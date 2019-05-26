@@ -73,59 +73,6 @@
         let steamUrl = "https://store.steampowered.com/search/?term=";
         let platform = "";
 
-        function getGame() {
-          $.ajax({
-                url: "game_rec/",
-                type: "GET",
-                datatype: "json",
-                success: data => {
-                  currGame = data;
-                  if (currGame.cover != undefined) {
-                    $("#amazon").attr("href", amazonUrl + currGame.name.replace(/[^A-Za-z0-9-\s]/g, '').replace(/\s/g, '+') + "+" + platform);
-                    $("#bestbuy").attr("href", bestbuyUrl + currGame.name.replace(/[^A-Za-z0-9-\s]/g, '').replace(/\s/g, '+') + "+" + platform);
-                    $("#gamestop").attr("href", gamestopUrl + currGame.name.replace(/[^A-Za-z0-9-\s]/g, '').replace(/\s/g, '+') + "+" + platform + ",28zu0");
-
-                    $("#games").html(
-                      "<h4> Recommendation : " + currGame.name + "</h4>"
-                    );
-                    $("#gameCover").html(
-                      '<img class="gameCover" src="https://images.igdb.com/igdb/image/upload/t_1080p/' +
-                        currGame.cover.image_id +
-                        '.jpg" />'
-                    );
-                  } else {
-                    $("#games").html("<h4> No more games. Please reselect. </h4>");
-                    $("#addToWishList").attr("disabled", true);
-                    $("#alreadyHaveIt").attr("disabled", true);
-                    $("#dontLikeIt").attr("disabled", true);
-                    $("#showGameDetail").attr("disabled", true);
-                  }
-                  if (currGame.screenshots != undefined) {
-                    var i;
-                    const screenShotNum = 4;
-                    $("#screenshots").html("");
-                    for (
-                      i = 0;
-                      i < currGame.screenshots.length && i <= screenShotNum;
-                      i++
-                    ) {
-                      $("#screenshots").append(
-                        '<img class="screenshots" src="https://images.igdb.com/igdb/image/upload/t_1080p/' +
-                          currGame.screenshots[i].image_id +
-                          '.jpg" />'
-                      );
-                    }
-                  } else {
-                    $("#screenshots").html("<h5>No screenshots</h5>");
-                  }
-                  if (currGame.summary != undefined) {
-                    $("#summary").html("<p> Summary: " + currGame.summary + "</p>");
-                  } else {
-                    $("#summary").html("<h5> Sorry, no summary avaliable </h5>");
-                  }
-                } // end of success function 
-              }); // end of ajax get
-        }
         // get curr user
         $.ajax({
           url: "login/",
@@ -134,7 +81,11 @@
           success: data => {
             userID = data.ID;
             console.log("successfully logged in");
+
+            // get child info
             database.ref(userID + "/childInfo/").once('value').then(function(snapshot) {
+
+              // translate platform 
               platform = snapshot.val()["platform"];
               if (platform == 48) {
                 platform = "ps4";
@@ -145,6 +96,8 @@
               } else if (platform == 6) {
                 platform = "pc";
               }
+
+              // get a new game 
               $.ajax({
                 url: "game_rec/",
                 type: "GET",
@@ -152,6 +105,8 @@
                 success: data => {
                   currGame = data;
                   if (currGame.cover != undefined) {
+
+                    // buy url
                     if (platform != "pc") {
                       $("#amazon").attr("href", amazonUrl + currGame.name.replace(/[^A-Za-z0-9-\s]/g, '').replace(/\s/g, '+') + "+" + platform);
                       $("#bestbuy").attr("href", bestbuyUrl + currGame.name.replace(/[^A-Za-z0-9-\s]/g, '').replace(/\s/g, '+') + "+" + platform);
@@ -172,13 +127,15 @@
                         currGame.cover.image_id +
                         '.jpg" />'
                     );
+
                   } else {
                     $("#games").html("<h4> No more games. Please reselect. </h4>");
                     $("#addToWishList").attr("disabled", true);
                     $("#alreadyHaveIt").attr("disabled", true);
                     $("#dontLikeIt").attr("disabled", true);
                     $("#showGameDetail").attr("disabled", true);
-                  }
+                  }  // end of currGame.cover != undefined
+
                   if (currGame.screenshots != undefined) {
                     var i;
                     const screenShotNum = 4;
@@ -196,7 +153,9 @@
                     }
                   } else {
                     $("#screenshots").html("<h5>No screenshots</h5>");
-                  }
+                  } // end of currGame.screenshots != undefined
+
+
                   if (currGame.summary != undefined) {
                     $("#summary").html("<p> Summary: " + currGame.summary + "</p>");
                   } else {
@@ -209,8 +168,12 @@
                 // DONE: filter the previous one
                 // TODO: The filtered game will now appear again after clicked twice
                 console.log(currGame);
+
+                // update firebase 
                 currGame.platform = platform;
                 database.ref(userID + "/wishlist/" + currGame.id + "/").set(currGame);
+
+                // ajax get a new game 
                 $.ajax({
                   url: "game_rec/",
                   type: "GET",

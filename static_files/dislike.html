@@ -75,10 +75,17 @@
             if ((userID == undefined)) {
               $("#games").html("<h1>Login to use this option!</h1>");
             } else {
+
+                // list all data from dislike db
+                
               database.ref(userID + "/dislike/").once("value", snapshot => {
                 const data = snapshot.val();
                 let keys = Object.keys(data);
+
+                // iterate all 
                 for (index = 0; index < keys.length; index++) {
+
+                  // each game: <div id=gameId>
                   $("#games").append(
                     '<div id=' +  data[keys[index]].id + '>' + 
                     '<img class="gameCover" src="https://images.igdb.com/igdb/image/upload/t_1080p/' +
@@ -94,13 +101,15 @@
                       + "<hr id='list_hr'>"
                       + '</div>'
                   );
+
+                  // append remove option 
                   $("#" + data[keys[index]].cover.image_id).append(
                     '<button style="margin-top: 0.3vh; margin-bottom: 1vh" type="button" class="btn btn-danger btn-lg" id="' + data[keys[index]].id + '">' + 
                       'Remove' + 
                     '</button>'
                   );
 
-                  // remove button click()
+                  // remove click() function 
                   $("#" + data[keys[index]].cover.image_id + " #" + data[keys[index]].id).click(function(event) {
                       let currGameId = $(event.target).attr('id');
                       console.log("Clicked Game id: " + currGameId);
