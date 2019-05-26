@@ -91,31 +91,41 @@
                 database.ref(userID + "/wishlist/").once("value", snapshot => {
                   const data = snapshot.val();
                   let keys = Object.keys(data);
-                  for (index = 0; index < keys.length; index++) {
+                  for (i = 0; i < keys.length; i++) {
 
                     $("#games").append(
                       '<img class="gameCover" src="https://images.igdb.com/igdb/image/upload/t_1080p/' +
-                        data[keys[index]].cover.image_id +
+                        data[keys[i]].cover.image_id +
                         '.jpg" />' +
                         "<h4>" +
-                        data[keys[index]].name +
+                        data[keys[i]].name +
                         "</h4>" +
                         "<div id='" +
-                        data[keys[index]].cover.image_id +
+                        data[keys[i]].cover.image_id +
                         "'></div>"
                     );
-                    $("#" + data[keys[index]].cover.image_id).load(
-                      "buy_button.html"
+
+                    $("#" + data[keys[i]].cover.image_id).append(
+                      '<button style="margin-top: 0.3vh; margin-bottom: 1vh" type="button"' + 
+                      'class="btn btn-info btn-lg dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' + 
+                        'Buy from </button>' + 
+                      '<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">' + 
+                        '<a class="dropdown-item" id="amazon">Amazon</a>' + 
+                        '<a class="dropdown-item" id="bestbuy" href="">BestBuy</a>' + 
+                        '<a class="dropdown-item" id="gamestop" href="" >Gamestop</a>' + 
+                      '</div>' + 
+                      '<button style="margin-top: 0.3vh; margin-bottom: 1vh" type="button" class="btn btn-danger btn-lg" id="removeFromList">Remove</button>'
                     );
+
+                    let gameUrl = data[keys[i]].name.replace(/[^A-Za-z0-9-\s]/g, '').replace(/\s/g, '+') + "+" + platform;
+
+                    console.log(gameUrl);
+                    $("#" + data[keys[i]].cover.image_id + " #amazon").attr("href", amazonUrl + gameUrl);
+                    $("#" + data[keys[i]].cover.image_id + " #bestbuy").attr("href", bestbuyUrl + gameUrl);
+                    $("#" + data[keys[i]].cover.image_id + " #gamestop").attr("href", gamestopUrl + gameUrl + ",28zu0");
                     $("#games").append("<hr id='list_hr'>");
 
-                    console.log(amazonUrl + data[keys[index]].name.replace(/[^A-Za-z0-9-\s]/g, '').replace(/\s/g, '+') + "+" + platform);
-                    $("#amazon").attr("href", amazonUrl + data[keys[index]].name.replace(/[^A-Za-z0-9-\s]/g, '').replace(/\s/g, '+') + "+" + platform);
-                    $("#bestbuy").attr("href", bestbuyUrl + data[keys[index]].name.replace(/[^A-Za-z0-9-\s]/g, '').replace(/\s/g, '+') + "+" + platform);
-                    $("#gamestop").attr("href", gamestopUrl + data[keys[index]].name.replace(/[^A-Za-z0-9-\s]/g, '').replace(/\s/g, '+') + "+" + platform + ",28zu0");
-
-
-                  } // end of for loop 
+                  }// end of for loop 
                 }); // end of db.ref(wishlist)
               
               }); // end of db.ref(childinfo)
