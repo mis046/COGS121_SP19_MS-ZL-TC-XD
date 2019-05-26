@@ -70,26 +70,11 @@
         let amazonUrl = "https://www.amazon.com/s?k=";
         let bestbuyUrl = "https://www.bestbuy.com/site/searchpage.jsp?st=";
         let gamestopUrl = "https://www.gamestop.com/browse?nav=16k-3-";
+        let steamUrl = "https://store.steampowered.com/search/?term=";
         let platform = "";
 
-        // get curr user
-        $.ajax({
-          url: "login/",
-          type: "GET",
-          datatype: "json",
-          success: data => {
-            userID = data.ID;
-            console.log("successfully logged in");
-            database.ref(userID + "/childInfo/").once('value').then(function(snapshot) {
-              platform = snapshot.val()["platform"];
-              if (platform == 48) {
-                platform = "ps4";
-              } else if (platform == 49) {
-                platform = "xbox";
-              } else if (platform == 130) {
-                platform = "switch";
-              }
-              $.ajax({
+        function getGame() {
+          $.ajax({
                 url: "game_rec/",
                 type: "GET",
                 datatype: "json",
@@ -138,12 +123,93 @@
                   } else {
                     $("#summary").html("<h5> Sorry, no summary avaliable </h5>");
                   }
-                }
-              });
+                } // end of success function 
+              }); // end of ajax get
+        }
+        // get curr user
+        $.ajax({
+          url: "login/",
+          type: "GET",
+          datatype: "json",
+          success: data => {
+            userID = data.ID;
+            console.log("successfully logged in");
+            database.ref(userID + "/childInfo/").once('value').then(function(snapshot) {
+              platform = snapshot.val()["platform"];
+              if (platform == 48) {
+                platform = "ps4";
+              } else if (platform == 49) {
+                platform = "xbox";
+              } else if (platform == 130) {
+                platform = "switch";
+              } else if (platform == 6) {
+                platform = "pc";
+              }
+              $.ajax({
+                url: "game_rec/",
+                type: "GET",
+                datatype: "json",
+                success: data => {
+                  currGame = data;
+                  if (currGame.cover != undefined) {
+                    if (platform != "pc") {
+                      $("#amazon").attr("href", amazonUrl + currGame.name.replace(/[^A-Za-z0-9-\s]/g, '').replace(/\s/g, '+') + "+" + platform);
+                      $("#bestbuy").attr("href", bestbuyUrl + currGame.name.replace(/[^A-Za-z0-9-\s]/g, '').replace(/\s/g, '+') + "+" + platform);
+                      $("#gamestop").attr("href", gamestopUrl + currGame.name.replace(/[^A-Za-z0-9-\s]/g, '').replace(/\s/g, '+') + "+" + platform + ",28zu0");
+                      $("#steam").hide();
+                    } else {
+                      $("#amazon").hide();
+                      $("#bestbuy").hide();
+                      $("#gamestop").hide();
+                      $("#steam").attr("href", steamUrl + currGame.name.replace(/[^A-Za-z0-9-\s]/g, '').replace(/\s/g, '+'));
+                    }
+                
+                    $("#games").html(
+                      "<h4> Recommendation : " + currGame.name + "</h4>"
+                    );
+                    $("#gameCover").html(
+                      '<img class="gameCover" src="https://images.igdb.com/igdb/image/upload/t_1080p/' +
+                        currGame.cover.image_id +
+                        '.jpg" />'
+                    );
+                  } else {
+                    $("#games").html("<h4> No more games. Please reselect. </h4>");
+                    $("#addToWishList").attr("disabled", true);
+                    $("#alreadyHaveIt").attr("disabled", true);
+                    $("#dontLikeIt").attr("disabled", true);
+                    $("#showGameDetail").attr("disabled", true);
+                  }
+                  if (currGame.screenshots != undefined) {
+                    var i;
+                    const screenShotNum = 4;
+                    $("#screenshots").html("");
+                    for (
+                      i = 0;
+                      i < currGame.screenshots.length && i <= screenShotNum;
+                      i++
+                    ) {
+                      $("#screenshots").append(
+                        '<img class="screenshots" src="https://images.igdb.com/igdb/image/upload/t_1080p/' +
+                          currGame.screenshots[i].image_id +
+                          '.jpg" />'
+                      );
+                    }
+                  } else {
+                    $("#screenshots").html("<h5>No screenshots</h5>");
+                  }
+                  if (currGame.summary != undefined) {
+                    $("#summary").html("<p> Summary: " + currGame.summary + "</p>");
+                  } else {
+                    $("#summary").html("<h5> Sorry, no summary avaliable </h5>");
+                  }
+                } // end of success function 
+              }); // end of ajax get
 
               $("#addToWishList").click(() => {
                 // DONE: filter the previous one
                 // TODO: The filtered game will now appear again after clicked twice
+                console.log(currGame);
+                currGame.platform = platform;
                 database.ref(userID + "/wishlist/" + currGame.id + "/").set(currGame);
                 $.ajax({
                   url: "game_rec/",
@@ -153,10 +219,17 @@
                   success: data => {
                     currGame = data;
                     if (currGame.cover != undefined) {
-                      $("#amazon").attr("href", amazonUrl + currGame.name.replace(/[^A-Za-z0-9-\s]/g, '').replace(/\s/g, '+') + "+" + platform);
-                      $("#bestbuy").attr("href", bestbuyUrl + currGame.name.replace(/[^A-Za-z0-9-\s]/g, '').replace(/\s/g, '+') + "+" + platform);
-                      $("#gamestop").attr("href", gamestopUrl + currGame.name.replace(/[^A-Za-z0-9-\s]/g, '').replace(/\s/g, '+') + "+" + platform + ",28zu0");
-
+                      if (platform != "pc") {
+                        $("#amazon").attr("href", amazonUrl + currGame.name.replace(/[^A-Za-z0-9-\s]/g, '').replace(/\s/g, '+') + "+" + platform);
+                        $("#bestbuy").attr("href", bestbuyUrl + currGame.name.replace(/[^A-Za-z0-9-\s]/g, '').replace(/\s/g, '+') + "+" + platform);
+                        $("#gamestop").attr("href", gamestopUrl + currGame.name.replace(/[^A-Za-z0-9-\s]/g, '').replace(/\s/g, '+') + "+" + platform + ",28zu0");
+                        $("#steam").hide();
+                      } else {
+                        $("#amazon").hide();
+                        $("#bestbuy").hide();
+                        $("#gamestop").hide();
+                        $("#steam").attr("href", steamUrl + currGame.name.replace(/[^A-Za-z0-9-\s]/g, '').replace(/\s/g, '+'));
+                      }
                       $("#games").html(
                         "<h4> Recommendation : " + currGame.name + "</h4>"
                       );
@@ -195,13 +268,14 @@
                     } else {
                       $("#summary").html("<h5>Sorry, no summary avaliable" + "<h5>");
                     }
-                  }
-                });
-              });
+                  } // end of ajax success function 
+                }); // end of ajax 
+              }); // end of click()
 
               $("#dontLikeIt").click(() => {
                 // DONE: filter the previous one
                 // TODO: The filtered game will now appear again after clicked twice
+                currGame.platform = platform;
                 database.ref(userID + "/dislike/" + currGame.id + "/").set(currGame);
                 $.ajax({
                   url: "game_rec/",
@@ -211,10 +285,17 @@
                   success: data => {
                     currGame = data;
                     if (currGame.cover != undefined) {
+                      if (platform != "pc") {
                       $("#amazon").attr("href", amazonUrl + currGame.name.replace(/[^A-Za-z0-9-\s]/g, '').replace(/\s/g, '+') + "+" + platform);
                       $("#bestbuy").attr("href", bestbuyUrl + currGame.name.replace(/[^A-Za-z0-9-\s]/g, '').replace(/\s/g, '+') + "+" + platform);
                       $("#gamestop").attr("href", gamestopUrl + currGame.name.replace(/[^A-Za-z0-9-\s]/g, '').replace(/\s/g, '+') + "+" + platform + ",28zu0");
-
+                      $("#steam").hide();
+                    } else {
+                      $("#amazon").hide();
+                      $("#bestbuy").hide();
+                      $("#gamestop").hide();
+                      $("#steam").attr("href", steamUrl + currGame.name.replace(/[^A-Za-z0-9-\s]/g, '').replace(/\s/g, '+'));
+                    }
                       $("#games").html(
                         "<h4> Recommendation : " + currGame.name + "</h4>"
                       );
@@ -260,6 +341,7 @@
               $("#alreadyHaveIt").click(() => {
                 // DONE: filter the previous one
                 // TODO: The filtered game will now appear again after clicked twice
+                currGame.platform = platform;
                 database.ref(userID + "/owned/" + currGame.id + "/").set(currGame);
                 $.ajax({
                   url: "game_rec/",
@@ -269,10 +351,17 @@
                   success: data => {
                     currGame = data;
                     if (currGame.cover != undefined) {
+                      if (platform != "pc") {
                       $("#amazon").attr("href", amazonUrl + currGame.name.replace(/[^A-Za-z0-9-\s]/g, '').replace(/\s/g, '+') + "+" + platform);
                       $("#bestbuy").attr("href", bestbuyUrl + currGame.name.replace(/[^A-Za-z0-9-\s]/g, '').replace(/\s/g, '+') + "+" + platform);
                       $("#gamestop").attr("href", gamestopUrl + currGame.name.replace(/[^A-Za-z0-9-\s]/g, '').replace(/\s/g, '+') + "+" + platform + ",28zu0");
-
+                      $("#steam").hide();
+                    } else {
+                      $("#amazon").hide();
+                      $("#bestbuy").hide();
+                      $("#gamestop").hide();
+                      $("#steam").attr("href", steamUrl + currGame.name.replace(/[^A-Za-z0-9-\s]/g, '').replace(/\s/g, '+'));
+                    }
                       $("#games").html(
                         "<h4> Recommendation : " + currGame.name + "</h4>"
                       );
@@ -316,9 +405,9 @@
               });
 
 
-            });
-          }
-        });
+            }); // end of login ajax success call backfunction  
+          } // end of login ajax 
+        }); // end of document ready 
       })
     </script>
     <script>
@@ -408,6 +497,12 @@
               id="gamestop"
               href="https://www.gamestop.com/browse?nav=16k-3-horizon+zero+dawn,28zu0"
               >Gamestop</a
+            >
+            <a
+              class="dropdown-item"
+              id="steam"
+              href="https://www.gamestop.com/browse?nav=16k-3-horizon+zero+dawn,28zu0"
+              >Steam</a
             >
           </div>
         </div>

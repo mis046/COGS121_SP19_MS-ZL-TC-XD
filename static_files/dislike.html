@@ -88,7 +88,9 @@
                       "</h4>" +
                       "<div id='" +
                       data[keys[index]].cover.image_id +
-                      "'></div>"
+                      "'></div>" + 
+                      '<span class="badge badge-dark">' + data[keys[index]].platform + '</span>'
+
                   );
                   $("#" + data[keys[index]].cover.image_id).load(
                     "remove_button.html"

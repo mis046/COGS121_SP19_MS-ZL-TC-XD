@@ -67,6 +67,7 @@
         let amazonUrl = "https://www.amazon.com/s?k=";
         let bestbuyUrl = "https://www.bestbuy.com/site/searchpage.jsp?st=";
         let gamestopUrl = "https://www.gamestop.com/browse?nav=16k-3-";
+        let steamUrl = "https://store.steampowered.com/search/?term=";
         let platform = "";
 
         // get curr user and get the wishlist
@@ -79,33 +80,26 @@
             if ((userID == undefined)) {
               $("#games").html("<h1>Login to use this option!</h1>");
             } else {
-              database.ref(userID + "/childInfo/").once('value').then(function(snapshot) {
-                platform = snapshot.val()["platform"];
-                if (platform == 48) {
-                  platform = "ps4";
-                } else if (platform == 49) {
-                  platform = "xbox";
-                } else if (platform == 130) {
-                  platform = "switch";
-                }
                 database.ref(userID + "/wishlist/").once("value", snapshot => {
                   const data = snapshot.val();
                   let keys = Object.keys(data);
-                  for (i = 0; i < keys.length; i++) {
+                  for (index = 0; index < keys.length; index++) {
 
                     $("#games").append(
                       '<img class="gameCover" src="https://images.igdb.com/igdb/image/upload/t_1080p/' +
-                        data[keys[i]].cover.image_id +
+                        data[keys[index]].cover.image_id +
                         '.jpg" />' +
                         "<h4>" +
-                        data[keys[i]].name +
+                        data[keys[index]].name +
                         "</h4>" +
                         "<div id='" +
-                        data[keys[i]].cover.image_id +
-                        "'></div>"
+                        data[keys[index]].cover.image_id +
+                        "'></div>" + 
+                        '<span class="badge badge-dark">' + data[keys[index]].platform + '</span>'
+
                     );
 
-                    $("#" + data[keys[i]].cover.image_id).append(
+                    $("#" + data[keys[index]].cover.image_id).append(
                       '<button style="margin-top: 0.3vh; margin-bottom: 1vh" type="button"' + 
                       'class="btn btn-info btn-lg dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' + 
                         'Buy from </button>' + 
@@ -113,22 +107,30 @@
                         '<a class="dropdown-item" id="amazon">Amazon</a>' + 
                         '<a class="dropdown-item" id="bestbuy" href="">BestBuy</a>' + 
                         '<a class="dropdown-item" id="gamestop" href="" >Gamestop</a>' + 
+                        '<a class="dropdown-item" id="steam" href="" >Steam</a>' + 
                       '</div>' + 
                       '<button style="margin-top: 0.3vh; margin-bottom: 1vh" type="button" class="btn btn-danger btn-lg" id="removeFromList">Remove</button>'
                     );
 
-                    let gameUrl = data[keys[i]].name.replace(/[^A-Za-z0-9-\s]/g, '').replace(/\s/g, '+') + "+" + platform;
+                    if (data[keys[index]].platform != "pc") {
+                      let gameUrl = data[keys[index]].name.replace(/[^A-Za-z0-9-\s]/g, '').replace(/\s/g, '+') + "+" + data[keys[index]].platform;
+                      $("#" + data[keys[index]].cover.image_id + " #amazon").attr("href", amazonUrl + gameUrl);
+                    $("#" + data[keys[index]].cover.image_id + " #bestbuy").attr("href", bestbuyUrl + gameUrl);
+                    $("#" + data[keys[index]].cover.image_id + " #gamestop").attr("href", gamestopUrl + gameUrl + ",28zu0");
+                      $("#" + data[keys[index]].cover.image_id + " #steam").hide();
+                    } else {
+                      let gameUrl = data[keys[index]].name.replace(/[^A-Za-z0-9-\s]/g, '').replace(/\s/g, '+');
+                      $("#" + data[keys[index]].cover.image_id + " #amazon").hide();
+                    $("#" + data[keys[index]].cover.image_id + " #bestbuy").hide();
+                    $("#" + data[keys[index]].cover.image_id + " #gamestop").hide();
+                      $("#" + data[keys[index]].cover.image_id + " #steam").attr("href", steamUrl + gameUrl);
+                    }
 
-                    console.log(gameUrl);
-                    $("#" + data[keys[i]].cover.image_id + " #amazon").attr("href", amazonUrl + gameUrl);
-                    $("#" + data[keys[i]].cover.image_id + " #bestbuy").attr("href", bestbuyUrl + gameUrl);
-                    $("#" + data[keys[i]].cover.image_id + " #gamestop").attr("href", gamestopUrl + gameUrl + ",28zu0");
                     $("#games").append("<hr id='list_hr'>");
 
                   }// end of for loop 
                 }); // end of db.ref(wishlist)
               
-              }); // end of db.ref(childinfo)
             } // end of else 
           } // end of success function 
         }); // end of login ajax 
