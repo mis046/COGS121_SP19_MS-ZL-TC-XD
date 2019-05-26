@@ -91,6 +91,7 @@
                       data[keys[index]].cover.image_id +
                       "'></div>" + 
                       '<span class="badge badge-dark">' + data[keys[index]].platform + '</span>'
+                      + "<hr id='list_hr'>"
                     + '</div>'
                   );
                   $("#" + data[keys[index]].cover.image_id).append(
@@ -106,9 +107,6 @@
                       database.ref(userID + "/owned/" + currGameId).remove();
                       $( "div" ).remove( '#' + currGameId);
                   });
-
-                  $("#games").append("<hr id='list_hr'>");
-
                   /*$("#gameCover").append(
                   '<img class="gameCover" src="https://images.igdb.com/igdb/image/upload/t_1080p/' +
                   data[keys[index]].cover.image_id +

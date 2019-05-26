@@ -80,6 +80,7 @@
                 let keys = Object.keys(data);
                 for (index = 0; index < keys.length; index++) {
                   $("#games").append(
+                    '<div id=' +  data[keys[index]].id + '>' + 
                     '<img class="gameCover" src="https://images.igdb.com/igdb/image/upload/t_1080p/' +
                       data[keys[index]].cover.image_id +
                       '.jpg" />' +
@@ -90,13 +91,22 @@
                       data[keys[index]].cover.image_id +
                       "'></div>" + 
                       '<span class="badge badge-dark">' + data[keys[index]].platform + '</span>'
-
+                      + "<hr id='list_hr'>"
+                      + '</div>'
                   );
-                  $("#" + data[keys[index]].cover.image_id).load(
-                    "remove_button.html"
+                  $("#" + data[keys[index]].cover.image_id).append(
+                    '<button style="margin-top: 0.3vh; margin-bottom: 1vh" type="button" class="btn btn-danger btn-lg" id="' + data[keys[index]].id + '">' + 
+                      'Remove' + 
+                    '</button>'
                   );
-                  $("#games").append("<hr id='list_hr'>");
 
+                  // remove button click()
+                  $("#" + data[keys[index]].cover.image_id + " #" + data[keys[index]].id).click(function(event) {
+                      let currGameId = $(event.target).attr('id');
+                      console.log("Clicked Game id: " + currGameId);
+                      database.ref(userID + "/dislike/" + currGameId).remove();
+                      $( "div" ).remove( '#' + currGameId);
+                  });
                   /*$("#gameCover").append(
                   '<img class="gameCover" src="https://images.igdb.com/igdb/image/upload/t_1080p/' +
                   data[keys[index]].cover.image_id +

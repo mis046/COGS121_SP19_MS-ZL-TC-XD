@@ -86,6 +86,7 @@
                   for (index = 0; index < keys.length; index++) {
 
                     $("#games").append(
+                      '<div id=' +  data[keys[index]].id + '>' + 
                       '<img class="gameCover" src="https://images.igdb.com/igdb/image/upload/t_1080p/' +
                         data[keys[index]].cover.image_id +
                         '.jpg" />' +
@@ -95,8 +96,9 @@
                         "<div id='" +
                         data[keys[index]].cover.image_id +
                         "'></div>" + 
-                        '<span class="badge badge-dark">' + data[keys[index]].platform + '</span>'
-
+                        '<span class="badge badge-dark">' + data[keys[index]].platform + '</span>' + 
+                        "<hr id='list_hr'>" 
+                        + '</div>'
                     );
 
                     $("#" + data[keys[index]].cover.image_id).append(
@@ -108,9 +110,22 @@
                         '<a class="dropdown-item" id="bestbuy" href="">BestBuy</a>' + 
                         '<a class="dropdown-item" id="gamestop" href="" >Gamestop</a>' + 
                         '<a class="dropdown-item" id="steam" href="" >Steam</a>' + 
-                      '</div>' + 
-                      '<button style="margin-top: 0.3vh; margin-bottom: 1vh" type="button" class="btn btn-danger btn-lg" id="removeFromList">Remove</button>'
+                      '</div>'
                     );
+
+                    $("#" + data[keys[index]].cover.image_id).append(
+                    '<button style="margin-top: 0.3vh; margin-bottom: 1vh" type="button" class="btn btn-danger btn-lg" id="' + data[keys[index]].id + '">' + 
+                      'Remove' + 
+                    '</button>'
+                    );
+
+                    // remove button click()
+                  $("#" + data[keys[index]].cover.image_id + " #" + data[keys[index]].id).click(function(event) {
+                      let currGameId = $(event.target).attr('id');
+                      console.log("Clicked Game id: " + currGameId);
+                      database.ref(userID + "/wishlist/" + currGameId).remove();
+                      $( "div" ).remove( '#' + currGameId);
+                  });
 
                     if (data[keys[index]].platform != "pc") {
                       let gameUrl = data[keys[index]].name.replace(/[^A-Za-z0-9-\s]/g, '').replace(/\s/g, '+') + "+" + data[keys[index]].platform;
@@ -125,9 +140,6 @@
                     $("#" + data[keys[index]].cover.image_id + " #gamestop").hide();
                       $("#" + data[keys[index]].cover.image_id + " #steam").attr("href", steamUrl + gameUrl);
                     }
-
-                    $("#games").append("<hr id='list_hr'>");
-
                   }// end of for loop 
                 }); // end of db.ref(wishlist)
               
