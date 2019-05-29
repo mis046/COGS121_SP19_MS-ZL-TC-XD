@@ -83,7 +83,7 @@
             console.log("successfully logged in");
 
             // get child info
-            database.ref(userID + "/childInfo/" + 1).once('value').then(function(snapshot) {
+            database.ref(userID + "/childInfo/").once('value').then(function(snapshot) {
               // translate platform 
               platform = snapshot.val()["platform"];
               if (platform == 48) {
