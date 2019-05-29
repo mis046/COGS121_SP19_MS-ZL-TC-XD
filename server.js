@@ -109,7 +109,7 @@ app.get("/game_rec", (req, res) => {
 });
 
 // DONE: automatically fill the child info section, pass to child_info
-app.get("/child_info", (req, res) => {
+app.get("/child_info", (req, res) => { 
   let query = firebase
     .database()
     .ref(currUser.ID + "/")
