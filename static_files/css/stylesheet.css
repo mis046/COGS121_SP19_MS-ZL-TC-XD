@@ -26,6 +26,16 @@
   font-size: 1.1vw;
 }
 
+#list_hr {
+    display: block;
+    margin-top: 1vh;
+    margin-bottom: 3vh;
+    margin-left: auto;
+    margin-right: auto;
+    border-style: inset;
+    border-width: 1px;
+}
+
 #back_btn {
   margin-right: 10px
 }

@@ -95,6 +95,8 @@
             } else {
               $("#games").html("<h4> No more games. Please reselect. </h4>");
               $("#addToWishList").attr("disabled", true);
+              $("#alreadyHaveIt").attr("disabled", true);
+              $("#dontLikeIt").attr("disabled", true);
               $("#showGameDetail").attr("disabled", true);
             }
             if (currGame.screenshots != undefined) {

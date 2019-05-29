@@ -72,23 +72,44 @@
           datatype: "json",
           success: data => {
             userID = data.ID;
-            console.log(userID);
-            database.ref(userID + "/wishlist/").once("value", snapshot => {
-              const data = snapshot.val();
-              let keys = Object.keys(data);
-              for (index = 0; index < keys.length; index++) {
-                $("#games").append(
-                  "<h4> Included : " + data[keys[index]].name + "</h4>"
-                );
-                /*$("#gameCover").append(
+            if ((userID == undefined)) {
+              $("#games").html("<h1>Login to use this option!</h1>");
+            } else {
+              database.ref(userID + "/wishlist/").once("value", snapshot => {
+                const data = snapshot.val();
+                let keys = Object.keys(data);
+                for (index = 0; index < keys.length; index++) {
+                  $("#games").append(
+                    '<img class="gameCover" src="https://images.igdb.com/igdb/image/upload/t_1080p/' +
+                      data[keys[index]].cover.image_id +
+                      '.jpg" />' +
+                      "<h4>" +
+                      data[keys[index]].name +
+                      "</h4>" +
+                      "<div id='" +
+                      data[keys[index]].cover.image_id +
+                      "'></div>"
+                  );
+                  $("#" + data[keys[index]].cover.image_id).load(
+                    "buy_button.html"
+                  );
+                  $("#games").append("<hr id='list_hr'>");
+
+                  /*$("#gameCover").append(
                   '<img class="gameCover" src="https://images.igdb.com/igdb/image/upload/t_1080p/' +
                   data[keys[index]].cover.image_id +
                     '.jpg" />'
                 );*/
-              }
-            });
+                }
+              });
+            }
           }
         });
+      });
+    </script>
+    <script>
+      $("#removeFromList").click(() => {
+        console.log("remove this game"); // TODO remove a game
       });
     </script>
     <script>
@@ -102,60 +123,15 @@
     <div id="navbar"></div>
     <div class="jumbotron">
       <h1>
-        <button
-          type="button"
-          class="btn btn-outline-danger btn-lg"
-          id="back_btn"
-          onclick="goBack()"
-        >
-          Back
-        </button>
         Wishlist
       </h1>
     </div>
 
+    <div id="mylist"></div>
+
     <div class="container-fluid">
       <div style="margin:3vw" id="games"></div>
       <div style="margin:3vw" id="summary"></div>
-    </div>
-
-    <div style="margin-left: 5vw" class="container-fluid">
-      <div class="row">
-        <div style="margin-right: 3vw" class="col-xl-">
-          <div id="gameCover"></div>
-        </div>
-        <div class="col-md-">
-          <div class="row-md">
-            <button
-              style="margin-top: 2vh"
-              type="button"
-              class="btn btn-info btn-lg btn-block dropdown-toggle"
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false"
-            >
-              Buy from
-            </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <a
-                class="dropdown-item"
-                href="https://www.amazon.com/s?k=horizon+zero+dawn&crid=1T4A4FWQUUS39&sprefix=amazon+res%2Caps%2C198&ref=nb_sb_ss_i_1_10"
-                >Amazon</a
-              >
-              <a
-                class="dropdown-item"
-                href="https://www.bestbuy.com/site/searchpage.jsp?st=horizon+zero+dawn&_dyncharset=UTF-8&id=pcat17071&type=page&sc=Global&cp=1&nrp=&sp=&qp=&list=n&af=true&iht=y&usc=All+Categories&ks=960&keys=keys"
-                >BestBuy</a
-              >
-              <a
-                class="dropdown-item"
-                href="https://www.gamestop.com/browse?nav=16k-3-horizon+zero+dawn,28zu0"
-                >Gamestop</a
-              >
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
 
     <div id="screenshots"></div>
