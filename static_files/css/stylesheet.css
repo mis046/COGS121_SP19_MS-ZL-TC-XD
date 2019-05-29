@@ -2,6 +2,10 @@
   padding: 2rem 2rem;
 }
 
+#analysis {
+  margin-left: 5vw;
+}
+
 .screenshots {
   justify-content:center;
   width: 100%;
