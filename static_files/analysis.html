@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Firefrog</title>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/6.0.2/firebase-app.js"></script>
+    <!-- Add Firebase products that you want to use -->
+    <script src="https://www.gstatic.com/firebasejs/3.1.0/firebase-database.js"></script>
+
+    <script
+      type="text/javascript"
+      src="https://www.gstatic.com/charts/loader.js"
+    ></script>
+
+    <script>
+      // Your web app's Firebase configuration
+      var firebaseConfig = {
+        apiKey: "AIzaSyApxM5dVTvRHjfqNfD5xygT03JzTdyHBhs",
+        authDomain: "cogs121proj.firebaseapp.com",
+        databaseURL: "https://cogs121proj.firebaseio.com",
+        projectId: "cogs121proj",
+        storageBucket: "cogs121proj.appspot.com",
+        messagingSenderId: "75409493864",
+        appId: "1:75409493864:web:03c5b8c4be96c7db"
+      };
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+    </script>
+
+    <!-- Bootstrap JS -->
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+      integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+
+    <link rel="stylesheet" href="css/stylesheet.css" />
+
+    <script src="js/functions.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script type="text/javascript">
+      let userID = "1";
+      let count1 = 0;
+      let count2 = 0;
+      let count3 = 0;
+      let count4 = 0;
+      let count5 = 0;
+      let count6 = 0;
+      let count7 = 0;
+      let count8 = 0;
+      let count9 = 0;
+      let count10 = 0;
+      let count11 = 0;
+      let count12 = 0;
+      let count13 = 0;
+      let count14 = 0;
+      let count15 = 0;
+      let count16 = 0;
+      let count17 = 0;
+      let count18 = 0;
+      let count19 = 0;
+      let count20 = 0;
+      let count21 = 0;
+      let count22 = 0;
+      let count23 = 0;
+      let count24 = 0;
+      let count25 = 0;
+      let count26 = 0;
+      let count27 = 0;
+      let count28 = 0;
+      let count29 = 0;
+      let count30 = 0;
+
+      $(document).ready(() => {
+        const database = firebase.database();
+
+        // get curr user and get the wishlist
+        $.ajax({
+          url: "login/",
+          type: "GET",
+          datatype: "json",
+          success: data => {
+            userID = data.ID;
+            if (userID == undefined) {
+              $("#games").html("<h1>Login to use this option!</h1>");
+            } else {
+              // list all data from wishlist db
+              database.ref(userID + "/wishlist/").once("value", snapshot => {
+                const data = snapshot.val();
+                let keys = Object.keys(data);
+
+                if (keys.length == 0) {
+                  $("#title").html(
+                    "Add some games to your libraries to use this function"
+                  );
+                } else {
+                  for (i = 0; i < keys.length; i++) {
+                    let genre = data[keys[i]].genres[0].name;
+                    if (genre == "Fighting") {
+                      count1 = count1 + 1;
+                    } else if (genre == "Shooter") {
+                      count2 = count2 + 1;
+                    } else if (genre == "Music") {
+                      count3 = count3 + 1;
+                    } else if (genre == "Sport") {
+                      count4 = count4 + 1;
+                    } else if (genre == "Role-playing (RPG)") {
+                      count5 = count5 + 1;
+                    } else if (genre == "Racing") {
+                      count6 = count6 + 1;
+                    } else if (genre == "Strategy") {
+                      count7 = count7 + 1;
+                    } else if (genre == "Adventure") {
+                      count8 = count8 + 1;
+                    } else if (genre == "Puzzle") {
+                      count9 = count9 + 1;
+                    } else {
+                      count10 = count10 + 1;
+                    }
+                  }
+                }
+              }); // end of db.ref(wishlist)
+              database.ref(userID + "/owned/").once("value", snapshot => {
+                const data = snapshot.val();
+                let keys = Object.keys(data);
+
+                if (keys.length == 0) {
+                  $("#title").html(
+                    "Add some games to your libraries to use this function"
+                  );
+                } else {
+                  for (i = 0; i < keys.length; i++) {
+                    let genre = data[keys[i]].genres[0].name;
+                    if (genre == "Fighting") {
+                      count11 = count11 + 1;
+                    } else if (genre == "Shooter") {
+                      count12 = count12 + 1;
+                    } else if (genre == "Music") {
+                      count13 = count13 + 1;
+                    } else if (genre == "Sport") {
+                      count14 = count14 + 1;
+                    } else if (genre == "Role-playing (RPG)") {
+                      count15 = count15 + 1;
+                    } else if (genre == "Racing") {
+                      count16 = count16 + 1;
+                    } else if (genre == "Strategy") {
+                      count17 = count17 + 1;
+                    } else if (genre == "Adventure") {
+                      count18 = count18 + 1;
+                    } else if (genre == "Puzzle") {
+                      count19 = count19 + 1;
+                    } else {
+                      count20 = count20 + 1;
+                    }
+                  }
+                }
+              }); // end of db.ref(wishlist)
+              database.ref(userID + "/dislike/").once("value", snapshot => {
+                const data = snapshot.val();
+                let keys = Object.keys(data);
+
+                if (keys.length == 0) {
+                  $("#title").html(
+                    "Add some games to your libraries to use this function"
+                  );
+                } else {
+                  for (i = 0; i < keys.length; i++) {
+                    let genre = data[keys[i]].genres[0].name;
+                    if (genre == "Fighting") {
+                      count21 = count21 + 1;
+                    } else if (genre == "Shooter") {
+                      count22 = count22 + 1;
+                    } else if (genre == "Music") {
+                      count23 = count23 + 1;
+                    } else if (genre == "Sport") {
+                      count24 = count24 + 1;
+                    } else if (genre == "Role-playing (RPG)") {
+                      count25 = count25 + 1;
+                    } else if (genre == "Racing") {
+                      count26 = count26 + 1;
+                    } else if (genre == "Strategy") {
+                      count27 = count27 + 1;
+                    } else if (genre == "Adventure") {
+                      count28 = count28 + 1;
+                    } else if (genre == "Puzzle") {
+                      count29 = count29 + 1;
+                    } else {
+                      count30 = count30 + 1;
+                    }
+                  }
+                }
+              }); // end of db.ref(dislike)
+            } // end of else
+          } // end of success function
+        }); // end of login ajax
+      }); // end of document ready
+
+      google.charts.load("current", { packages: ["corechart"] });
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+
+        $("#analysis").click(() => {
+          var wishlist = google.visualization.arrayToDataTable([
+            ["Genre", "count"],
+            ["Fighting", count1],
+            ["Shooter", count2],
+            ["Music", count3],
+            ["Sport", count4],
+            ["Role-playing (RPG)", count5],
+            ["Racing", count6],
+            ["Strategy", count7],
+            ["Adventure", count8],
+            ["Puzzle", count9],
+            ["Other", count10]
+          ]);
+
+          var owned = google.visualization.arrayToDataTable([
+            ["Genre", "count"],
+            ["Fighting", count11],
+            ["Shooter", count12],
+            ["Music", count13],
+            ["Sport", count14],
+            ["Role-playing (RPG)", count15],
+            ["Racing", count16],
+            ["Strategy", count17],
+            ["Adventure", count18],
+            ["Puzzle", count19],
+            ["Other", count20]
+          ]);
+
+          var dislike = google.visualization.arrayToDataTable([
+            ["Genre", "count"],
+            ["Fighting", count21],
+            ["Shooter", count22],
+            ["Music", count23],
+            ["Sport", count24],
+            ["Role-playing (RPG)", count25],
+            ["Racing", count26],
+            ["Strategy", count27],
+            ["Adventure", count28],
+            ["Puzzle", count29],
+            ["Other", count30]
+          ]);
+
+          var options1 = {
+            title: "Wishlist games analysis"
+          };
+
+          var options2 = {
+            title: "Owned games analysis"
+          };
+
+          var options3 = {
+            title: "Disliked games analysis"
+          };
+
+          var chart1 = new google.visualization.PieChart(
+            document.getElementById("piechart1")
+          );
+
+          var chart2 = new google.visualization.PieChart(
+            document.getElementById("piechart2")
+          );
+
+          var chart3 = new google.visualization.PieChart(
+            document.getElementById("piechart3")
+          );
+
+          chart1.draw(wishlist, options1);
+          chart2.draw(owned, options2);
+          chart3.draw(dislike, options3);
+        });
+      }     
+    </script>
+    <script>
+      // include nav bar
+      $(function() {
+        $("#navbar").load("navbar.html");
+      });
+    </script>
+  </head>
+  <body>
+    <div id="navbar"></div>
+    <div class="jumbotron">
+      <h1 id="title">
+        Analysis
+      </h1>
+    </div>
+
+    <button id="analysis">Analysis!</button>
+
+    <div id="piechart1" style="width: 900px; height: 500px;"></div>
+    <div id="piechart2" style="width: 900px; height: 500px;"></div>
+    <div id="piechart3" style="width: 900px; height: 500px;"></div>
+</html>
