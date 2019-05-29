@@ -4,11 +4,12 @@
 #### Mingqi Shen
 #### Zhentao Lin  
 
-## Milestone 3
-In milestone 3, we implemented changes based on the feedback we got from our demo of milestone 2. In the child's info page, we added description for each sections such as gender, age and genre, and moved the the back button to top left of the page in order to avoid any confusion. We have implemented the Google login and all user data is stored on firebase. We've also made the page able to automatically fill in what the user selected on their previous attempt. The game recommendation page also got reworked to include css styling, real-time recommendation based on our API database, as well as AJAX screenshots and description of the game we recommend.
-## Screenshots
-
-## Index
+# Milestone 5
+## rubric 2 
+Parents of a child might play video games themselves, but it is likely that they have no idea on what games, or genres are suitable for a child of a certain age and gender or what their child likes to play, not to mention that they may not have all popular gaming consoles to choose from. In this scenario, all they have to do is to use our app, enter their child info, game preference and console preference, and a list of games with detailed summary and screenshots will automatically be recommended to them. They can dislike games their child does not like to exclude them from the list, add games to wishlists to buy later, or mark games as already owned for reference. After that, they can either purchase the game from various online shopping platforms ditrectly from the recommendation page or go to their wishlist and check out wishlisted games there. 
+##
+## rubric 3: Screenshots
+### Index
 
 ![alt text](https://github.com/mis046/COGS121_SP19_MS-ZL-TC-XD/blob/master/ms3_screenshots/Screen%20Shot%202019-05-12%20at%207.39.24%20PM.png)
 
