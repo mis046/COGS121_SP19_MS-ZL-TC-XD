@@ -55,7 +55,7 @@
       crossorigin="anonymous"
     />
 
-    <link rel="stylesheet" href="css/stylesheet.css" />
+    <link rel="stylesheet" href="css/stylesheetsub.css" />
 
     <script src="js/functions.js"></script>
 
@@ -87,18 +87,20 @@
 
                   // each game: <div id=gameId>
                   $("#games").append(
-                    '<div id=' +  data[keys[index]].id + '>' + 
+                    '<div class="gamediv" id=' 
+                    +  data[keys[index]].id + '>' + 
+                      "<h4>" +
+                      data[keys[index]].name +
+                      ' <span class="badge badge-dark">' + data[keys[index]].platform + '</span>'
+                      +
+                      "</h4>" + 
                     '<img class="gameCover" src="https://images.igdb.com/igdb/image/upload/t_1080p/' +
                       data[keys[index]].cover.image_id +
                       '.jpg" />' +
-                      "<h4>" +
-                      data[keys[index]].name +
-                      "</h4>" +
                       "<div id='" +
                       data[keys[index]].cover.image_id +
-                      "'></div>" + 
-                      '<span class="badge badge-dark">' + data[keys[index]].platform + '</span>'
-                      + "<hr id='list_hr'>"
+                      "'></div>" +
+                      "<hr id='list_hr'>"
                       + '</div>'
                   );
 
