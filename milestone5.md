@@ -37,7 +37,9 @@ Our UI skeleton gets a minor update in this milestone: pages that were added in 
 
 ## Rubrics 5 & 6: data visualization screenshot & explanation
 
-![alt text](https://github.com/mis046/COGS121_SP19_MS-ZL-TC-XD/blob/ms5/ms5_screenshots/statistics.png)
+![alt text](https://github.com/mis046/COGS121_SP19_MS-ZL-TC-XD/blob/ms5/ms5_screenshots/analysis1.png)
+![alt text](https://github.com/mis046/COGS121_SP19_MS-ZL-TC-XD/blob/ms5/ms5_screenshots/analysis2.png)
+![alt text](https://github.com/mis046/COGS121_SP19_MS-ZL-TC-XD/blob/ms5/ms5_screenshots/analysis3.png)
 We used google statistics to visualize the game genre percentage of the entire wishlist, disliked and owned games libraries of the user. We grabbed the data on these categories from our database through Ajax triggered by clicking a button, and graphed it using the function given by google statistics. 
 
 
