@@ -109,7 +109,7 @@ app.get("/game_rec", (req, res) => {
 });
 
 // DONE: automatically fill the child info section, pass to child_info
-app.get("/child_info", (req, res) => { 
+app.get("/child_info", (req, res) => {
   let query = firebase
     .database()
     .ref(currUser.ID + "/")
@@ -125,7 +125,6 @@ app.use(bodyParser.urlencoded({ extended: true })); // hook up with your app
 // post childinfo to form part of the query
 app.post("/child_info", (req, res) => {
   childInfo = req.body;
-  //console.log(childInfo.id);
   let ageQuery = "( age_ratings.rating = ";
   // make a age query base on age
   let age = childInfo.age;

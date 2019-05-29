@@ -57,52 +57,9 @@
     />
     <link rel="stylesheet" href="css/stylesheet.css" />
     <script src="js/functions.js"></script>
-    <script>
-      function switchToChild(i) {
-        $("#displayChildID").html("<h5>Child " + i + "</h5>");
-        // get child info
-        $.ajax({
-          url: "child_info/",
-          type: "GET",
-          dataType: "json",
-          success: data => {
-            //console.log(data);
-            childNum = data.length;
-            childData = data[i]; // get first child by default
-            //console.log(childNum);
-            $("#age").val(childData.age);
-            if (childData.gender == "female") {
-              $("#female").click();
-            } else {
-              $("#male").click();
-            }
-            if (childData.platform == "48") {
-              $("#ps4").click();
-            } else if (childData.platform == "49") {
-              $("#xbox").click();
-            } else if (childData.platform == "130") {
-              $("#switch").click();
-            } else if (childData.platform == "6") {
-              $("#pc").click();
-            }
-
-            for (let i = 0; i < childData.genres.length; i++) {
-              // deal with spaces
-              if (childData.genres[i] == "Role-playing (RPG)") {
-                $("#RPG").click();
-              } else {
-                $("#" + childData.genres[i]).click();
-              }
-            }
-          }
-        })
-      }
-    </script>
     <script type="text/javascript">
       let index = 0;
       let userID = "";
-      let childID = 1; // used to keep track of which child
-      let childNum = 0;
       $(document).ready(() => {
         const database = firebase.database();
 
@@ -122,47 +79,29 @@
           type: "GET",
           dataType: "json",
           success: data => {
-            //console.log(data);
-            childNum = data.length;
-            childData = data[1]; // get first child by default
-            $("#age").val(childData.age);
-            if (childData.gender == "female") {
+            $("#age").val(data.age);
+            if (data.gender == "female") {
               $("#female").click();
             } else {
               $("#male").click();
             }
-            if (childData.platform == "48") {
+            if (data.platform == "48") {
               $("#ps4").click();
-            } else if (childData.platform == "49") {
+            } else if (data.platform == "49") {
               $("#xbox").click();
-            } else if (childData.platform == "130") {
+            } else if (data.platform == "130") {
               $("#switch").click();
-            } else if (childData.platform == "6") {
+            } else if (data.platform == "6") {
               $("#pc").click();
             }
 
-            for (let i = 0; i < childData.genres.length; i++) {
+            for (let i = 0; i < data.genres.length; i++) {
               // deal with spaces
-              if (childData.genres[i] == "Role-playing (RPG)") {
+              if (data.genres[i] == "Role-playing (RPG)") {
                 $("#RPG").click();
               } else {
-                $("#" + childData.genres[i]).click();
+                $("#" + data.genres[i]).click();
               }
-            }
-
-            // fill the dropdown
-            for (let i = 1; i < childNum; i++) {
-              $("#childDropDown").append(
-                "<a onclick='(function(){ switchToChild(" +
-                  i +
-                  "); })();' class='dropdown-item' " +
-                  "id='child" +
-                  i +
-                  "'>" +
-                  "child " +
-                  i +
-                  "</a>"
-              );
             }
           }
         });
@@ -198,7 +137,7 @@
               document.location.href = "/game_rec.html";
 
               // store child info to db
-              database.ref(userID + "/childInfo/" + childID + "/").set({
+              database.ref(userID + "/childInfo/").set({
                 age: age,
                 gender: gender,
                 platform: platform,
@@ -220,10 +159,8 @@
   <body>
     <div id="navbar"></div>
     <div class="jumbotron">
-      <div class="row">
-        <div class="col">
-          <h1 style="padding-left: 15vw" align="center">
-            <!-- not needed any more <button
+      <h1 align="center">
+        <!-- not needed any more <button
           id="back_btn"
           type="button"
           class="btn btn-outline-danger btn-lg"
@@ -231,32 +168,8 @@
         >
           Back
         </button> -->
-            Input Child Info
-          </h1>
-        </div>
-        <div class="col-sm-2">
-          <h5 id="displayChildID">
-            Child 1
-          </h5>
-          <div class="dropdown">
-            <button
-              class="btn btn-secondary dropdown-toggle"
-              type="button"
-              id="dropdownMenuButton"
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false"
-            >
-              Dropdown button
-            </button>
-            <div
-              id="childDropDown"
-              class="dropdown-menu"
-              aria-labelledby="dropdownMenuButton"
-            ></div>
-          </div>
-        </div>
-      </div>
+        Input Child Info
+      </h1>
     </div>
 
     <div id="child-info" align="center">
