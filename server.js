@@ -39,7 +39,7 @@ app.listen(process.env.PORT || 3000, () => {
 // return current login user
 app.get("/login", (req, res) => {
   // remove temp user data
-  var temp = firebase.database().ref("undefined");
+  /*var temp = firebase.database().ref("undefined");
   temp
     .remove()
     .then(function() {
@@ -47,7 +47,7 @@ app.get("/login", (req, res) => {
     })
     .catch(function(error) {
       //console.log("Remove guest user temp failed: " + error.message);
-    });
+    });*/
   res.send(currUser);
 });
 
