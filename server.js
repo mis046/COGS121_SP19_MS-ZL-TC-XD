@@ -1,3 +1,7 @@
+/**
+ * This is the backend express server for our app which routes our whole app. Another main functionality of this backend server is to process user input and construct data api query to aquire data. 
+ */
+
 // initialize express
 const express = require("express");
 const app = express();
