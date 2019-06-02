@@ -1,18 +1,14 @@
+/* universal css for all pages*/
 .jumbotron{
   padding: 2rem 2rem;
 }
 
+/*css for analysis page*/
 #analysis {
   margin-left: 5vw;
 }
 
-.screenshots {
-  justify-content:center;
-  width: 100%;
-  margin-top: 20px;
-  margin-bottom:20px;
-}
-
+/*css for child info page*/
 .gender-btn {
   width: 7vw;
 }
@@ -63,6 +59,13 @@
 }
 
 /* For game_rec.html*/
+
+.screenshots {
+  justify-content:center;
+  width: 100%;
+  margin-top: 20px;
+  margin-bottom:20px;
+}
 
 .gameCover {
   width: 30vw;
