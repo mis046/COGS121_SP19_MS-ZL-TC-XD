@@ -150,6 +150,8 @@
                   }
                 }
               }); // end of db.ref(wishlist)
+
+              //get value from owned
               database.ref(userID + "/owned/").once("value", snapshot => {
                 const data = snapshot.val();
                 let keys = Object.keys(data);
@@ -185,6 +187,8 @@
                   }
                 }
               }); // end of db.ref(wishlist)
+
+              //get value from owned
               database.ref(userID + "/dislike/").once("value", snapshot => {
                 const data = snapshot.val();
                 let keys = Object.keys(data);
