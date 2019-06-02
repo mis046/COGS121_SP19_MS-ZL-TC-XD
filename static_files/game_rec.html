@@ -167,9 +167,9 @@
                 } // end of success function 
               }); // end of ajax get
 
+              //Add games to wishlist and these games will not show up again in recommendation
               $("#addToWishList").click(() => {
                 // DONE: filter the previous one
-                // TODO: The filtered game will now appear again after clicked twice
                 console.log(currGame);
 
                 // update firebase 
@@ -238,9 +238,9 @@
                 }); // end of ajax 
               }); // end of click()
 
+              //Add games to disliked page and these games will not show up again in recommendation
               $("#dontLikeIt").click(() => {
                 // DONE: filter the previous one
-                // TODO: The filtered game will now appear again after clicked twice
                 currGame.platform = platform;
                 database.ref(userID + "/dislike/" + currGame.id + "/").set(currGame);
                 $.ajax({
@@ -304,9 +304,9 @@
                 });
               });
 
+              //Add games to already owned page and these games will not show up again in recommendation
               $("#alreadyHaveIt").click(() => {
                 // DONE: filter the previous one
-                // TODO: The filtered game will now appear again after clicked twice
                 currGame.platform = platform;
                 database.ref(userID + "/owned/" + currGame.id + "/").set(currGame);
                 $.ajax({
