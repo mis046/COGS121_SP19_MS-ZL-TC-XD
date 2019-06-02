@@ -38,21 +38,10 @@ app.listen(process.env.PORT || 3000, () => {
 
 // return current login user
 app.get("/login", (req, res) => {
-  // remove temp user data
-  /*var temp = firebase.database().ref("undefined");
-  temp
-    .remove()
-    .then(function() {
-      //console.log("Remove guest user temp insucceeded.");
-    })
-    .catch(function(error) {
-      //console.log("Remove guest user temp failed: " + error.message);
-    });*/
   res.send(currUser);
 });
 
-// generate new game
-// DONE: add firebase filter games in the data field
+// generate new game + add firebase filter games in the data field
 // e.g. "& name != "xxx" & name != "xxx""
 app.get("/game_rec", (req, res) => {
   let result = "result";
@@ -67,12 +56,10 @@ app.get("/game_rec", (req, res) => {
   query.once("value").then(function(snapshot) {
     filterQuery = "";
     snapshot.child("dislike").forEach(function(childSnapshot) {
-      // key will be "ada" the first time and "alan" the second time
       let filter_name = childSnapshot.val().name;
       filterQuery += ' & name != "' + filter_name + '"';
     });
     snapshot.child("owned").forEach(function(childSnapshot) {
-      // key will be "ada" the first time and "alan" the second time
       let filter_name = childSnapshot.val().name;
       filterQuery += ' & name != "' + filter_name + '"';
     });
@@ -84,11 +71,7 @@ app.get("/game_rec", (req, res) => {
   });
   filterQuery += ' & name != "' + currGame + '"';
 
-  // Done: 1. add age filter
-  // IGDB [0-5: 2,    6-9: 2/3;    10-12: 2/3/4,    13-16: 2/3/4/5,    17: 2/3/4/5/6,    18: 2/3/4/5/6/7]+5
-  // DONE: 2. can retrieve more game details to pass to game_info.html
-  // TODO: 3. try to modify the query to get more games, current query will only return around
-  // 30 games or less.
+  // call to igdb api with correct queries
   axios({
     url: "https://api-v3.igdb.com/games",
     method: "GET",
@@ -112,7 +95,7 @@ app.get("/game_rec", (req, res) => {
     });
 });
 
-// DONE: automatically fill the child info section, pass to child_info
+// automatically fill the child info section, pass to child_info
 app.get("/child_info", (req, res) => {
   let query = firebase
     .database()
@@ -126,7 +109,7 @@ app.get("/child_info", (req, res) => {
 const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({ extended: true })); // hook up with your app
 
-// post childinfo to form part of the query
+// post childinfo to form part of the query + build age filter 
 app.post("/child_info", (req, res) => {
   childInfo = req.body;
   let ageQuery = "( age_ratings.rating = ";
