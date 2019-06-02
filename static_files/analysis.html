@@ -101,6 +101,10 @@
       let count29 = 0;
       let count30 = 0;
 
+      let chart1empty = false;
+      let chart2empty = false;
+      let chart3empty = false;
+
       $(document).ready(() => {
         const database = firebase.database();
 
@@ -117,12 +121,14 @@
               // list all data from wishlist db
               database.ref(userID + "/wishlist/").once("value", snapshot => {
                 const data = snapshot.val();
-                let keys = Object.keys(data);
+                let keys = null;
+                if (data != null) {
+                  keys = Object.keys(data);
+                } 
 
-                if (keys.length == 0) {
-                  $("#title").html(
-                    "Add some games to your libraries to use this function"
-                  );
+                if (keys == null) {
+                  // chart 1 is empty
+                  chart1empty = true;
                 } else {
                   for (i = 0; i < keys.length; i++) {
                     let genre = data[keys[i]].genres[0].name;
@@ -152,12 +158,14 @@
               }); // end of db.ref(wishlist)
               database.ref(userID + "/owned/").once("value", snapshot => {
                 const data = snapshot.val();
-                let keys = Object.keys(data);
+                let keys = null;
+                if (data != null) {
+                  keys = Object.keys(data);
+                } 
 
-                if (keys.length == 0) {
-                  $("#title").html(
-                    "Add some games to your libraries to use this function"
-                  );
+                if (keys == null) {
+                  // chart 2 is empty
+                  chart2empty = true;
                 } else {
                   for (i = 0; i < keys.length; i++) {
                     let genre = data[keys[i]].genres[0].name;
@@ -187,12 +195,14 @@
               }); // end of db.ref(wishlist)
               database.ref(userID + "/dislike/").once("value", snapshot => {
                 const data = snapshot.val();
-                let keys = Object.keys(data);
+                let keys = null;
+                if (data != null) {
+                  keys = Object.keys(data);
+                } 
 
-                if (keys.length == 0) {
-                  $("#title").html(
-                    "Add some games to your libraries to use this function"
-                  );
+                if (keys == null) {
+                  // chart 3 is empty
+                  chart3empty = true;
                 } else {
                   for (i = 0; i < keys.length; i++) {
                     let genre = data[keys[i]].genres[0].name;
@@ -300,6 +310,13 @@
           chart1.draw(wishlist, options1);
           chart2.draw(owned, options2);
           chart3.draw(dislike, options3);
+
+          /*
+          if (chart1empty) $("#piechart1").html("This chart is empty!");
+          if (chart2empty) $("#piechart2").html("This chart is empty!");
+          if (chart3empty) $("#piechart3").html("This chart is empty!");
+          */
+
         });
       }     
     </script>
@@ -319,8 +336,9 @@
     </div>
 
     <button class="btn btn-outline-info btn-lg" id="analysis">Analyze!</button>
-
-    <div id="piechart1" style="width: 900px; height: 500px;"></div>
-    <div id="piechart2" style="width: 900px; height: 500px;"></div>
-    <div id="piechart3" style="width: 900px; height: 500px;"></div>
+    <div class="container">
+      <div class="span12" id="piechart1" style="max-width: 100%; height: 500px;"></div>
+      <div class="span12" id="piechart2" style="max-width: 100%; height: 500px;"></div>
+      <div class="span12" id="piechart3" style="max-width: 100%; height: 500px;"></div>
+    </div>
 </html>
