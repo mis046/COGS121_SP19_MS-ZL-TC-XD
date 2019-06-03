@@ -1,5 +1,10 @@
 ## Team members and contributions 
 #### Xuyuan Duan
+- drafted storyboard 2
+- set up UI skeletons
+- contributed in most codes of stylesheet.css and all contents of stylesheetsub.css
+- UI design of game rec, wishlist, owned and disliked games, as well as some universal styling in title section, etc.
+- Write up of milestone 1 through milestone 5
 #### Tianyi Cao
 #### Mingqi Shen
 #### Zhentao Lin  
@@ -63,4 +68,5 @@ universal css for all pages
 Stylesheet for wishlist, dislike and already owned pages
 
 ## link to presentation slide 
+https://docs.google.com/presentation/d/1jpoSN7BH90KFoqbbaIkKhDnffbEwnrVBULFnW1R7phs/edit?usp=sharing
 ## link to demo video
