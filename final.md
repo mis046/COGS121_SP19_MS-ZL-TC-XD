@@ -6,6 +6,11 @@
 - UI design of game rec, wishlist, owned and disliked games, as well as some universal styling in title section, etc.
 - Write up of milestone 1 through milestone 5
 #### Tianyi Cao
+- drafted storyboard 1, polished prototype 2
+- contribute to the building of game_rec page and child_info page
+- add and functionize owned/dislike/wishlist pages
+- create original UI for owned/dislike/wishlist pages in milestone 4
+- visualize data in owned/dislike/wishlist pages through analysis page
 #### Mingqi Shen
 #### Zhentao Lin  
 - set up api calls to IGDB's api, 
